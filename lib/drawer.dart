@@ -10,7 +10,7 @@ class DDrawer extends StatefulWidget {
 class _DDrawerState extends State<DDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return const Drawer(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
