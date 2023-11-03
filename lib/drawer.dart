@@ -16,6 +16,7 @@ class _DDrawerState extends State<DDrawer> {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               for (final Map<String, dynamic> entry in menu)
                 InkWell(
@@ -25,7 +26,7 @@ class _DDrawerState extends State<DDrawer> {
                       children: <Widget>[
                         Text(entry["item"], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 5),
-                        Container(height: .5, width: entry["item"].length * 7, color: blue),
+                        Container(height: .5, width: entry["item"].length * 7.0, color: blue),
                       ],
                     ),
                   ),
