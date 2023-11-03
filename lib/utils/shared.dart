@@ -74,4 +74,13 @@ final GlobalKey<State> keyboardKey = GlobalKey<State>();
 
 bool cellScale = false;
 bool rowRotation = false;
+
+String selectedItem = "Home";
+
+final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
+  <String, dynamic>{"item": "Home", "onTap": () {}},
+  <String, dynamic>{"item": "History", "onTap": () {}},
+  <String, dynamic>{"item": "Analytics", "onTap": () {}},
+];
+
 //add animation effects to the cells
