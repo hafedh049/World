@@ -17,16 +17,23 @@ class _DDrawerState extends State<DDrawer> {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               for (final Map<String, dynamic> entry in menu)
-                InkWell(
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 16, bottom: 16),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, bottom: 16),
+                  child: InkWell(
+                    onTap: () => true,
+                    splashColor: transparent,
+                    hoverColor: transparent,
+                    highlightColor: transparent,
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(entry["item"], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Icon(entry["icon"], size: 15), const SizedBox(width: 10), Text(entry["item"], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))]),
                         const SizedBox(height: 5),
-                        Container(height: .5, width: entry["item"].length * 7.0, color: blue),
+                        Container(height: .9, width: entry["item"].length * 12.0, color: white),
                       ],
                     ),
                   ),

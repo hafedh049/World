@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 
 String theme = "dark";
@@ -78,9 +79,9 @@ bool rowRotation = false;
 String selectedItem = "Home";
 
 final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
-  <String, dynamic>{"item": "Home", "onTap": () {}},
-  <String, dynamic>{"item": "History", "onTap": () {}},
-  <String, dynamic>{"item": "Analytics", "onTap": () {}},
+  <String, dynamic>{"item": "Home", "onTap": () {}, "icon": FontAwesomeIcons.gamepad},
+  <String, dynamic>{"item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft},
+  <String, dynamic>{"item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator},
 ];
 
 //add animation effects to the cells
