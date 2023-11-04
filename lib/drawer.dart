@@ -20,7 +20,7 @@ class _DDrawerState extends State<DDrawer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Center(child: Image.asset("assets/world.png", width: 100, height: 100).animate(onComplete: (AnimationController controller) => controller.repeat()).rotate(duration: 5.seconds)),
+              Center(child: Image.asset("assets/w.png", width: 100, height: 100).animate(onComplete: (AnimationController controller) => controller.repeat()).rotate(duration: 5.seconds)),
               const SizedBox(height: 30),
               for (final Map<String, dynamic> entry in menu)
                 Padding(
