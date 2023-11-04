@@ -93,7 +93,7 @@ List<Widget> buidGrid() {
   return grid;
 }
 
-List<Widget> buidKeyboard(BuildContext context) {
+List<Widget> buidKeyboard(BuildContext context, void Function(void Function()) updater) {
   List<Widget> keyboard = <Widget>[];
   for (int indexI = 0; indexI < keyboardMatrix.length; indexI++) {
     keyboard.add(
@@ -162,6 +162,13 @@ List<Widget> buidKeyboard(BuildContext context) {
                           await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
                           lineIndex = 0;
                           columnIndex = 0;
+                          gameMatrix = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(magicWord.length, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
+                          for (final List<Map<String, dynamic>> item in keyboardMatrix) {
+                            for (Map<String, dynamic> map in item) {
+                              map["type"] = keyState.lastOrNull;
+                            }
+                          }
+                          updater(() {});
                           return;
                         }
                         lineIndex += 1;
