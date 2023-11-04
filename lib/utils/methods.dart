@@ -211,6 +211,7 @@ void endGame(BuildContext context) async {
     builder: (BuildContext context) => Container(
       padding: const EdgeInsets.all(36),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -218,6 +219,7 @@ void endGame(BuildContext context) async {
           const SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               for (final Map<String, String> entry in endGameAnalytics)
                 Container(
@@ -236,12 +238,16 @@ void endGame(BuildContext context) async {
           const Text("GUESS DISTRIBUTION", style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16)),
           const SizedBox(height: 10),
           for (int index = 0; index < 6; index++)
-            Row(
-              children: <Widget>[
-                Text((index + 1).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
-                const SizedBox(width: 5),
-                Container(padding: const EdgeInsets.all(2), child: Text(calculateGuessDistribution(index).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14))),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text((index + 1).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
+                  const SizedBox(width: 5),
+                  Container(padding: const EdgeInsets.all(2), color: blue.withOpacity(.6), child: Text(calculateGuessDistribution(index).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14))),
+                ],
+              ),
             ),
         ],
       ),
