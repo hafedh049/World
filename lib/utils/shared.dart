@@ -40,57 +40,9 @@ final List<GlobalKey<State>> rowsStates = List<GlobalKey<State>>.generate(6, (in
 
 final GlobalKey<State> keyboardKey = GlobalKey<State>();
 
-//add animation effects to the cells
-
-final List<List<Map<String, dynamic>>> keyboardMatrix = <List<Map<String, dynamic>>>[
-  <Map<String, dynamic>>[
-    <String, dynamic>{"key": 'Q', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'W', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'E', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'R', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'T', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'Y', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'U', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'I', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'O', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'P', "type": keyState.lastOrNull},
-  ],
-  <Map<String, dynamic>>[
-    <String, dynamic>{"key": 'A', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'S', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'D', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'F', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'G', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'H', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'J', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'K', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'L', "type": keyState.lastOrNull},
-  ],
-  <Map<String, dynamic>>[
-    <String, dynamic>{"key": 'ENTER', "size": 2, "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'Z', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'X', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'C', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'V', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'B', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'N', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'M', "type": keyState.lastOrNull},
-    <String, dynamic>{"key": 'DEL', "size": 2, "type": keyState.lastOrNull},
-  ],
-];
-
-final List<List<Map<String, dynamic>>> gameMatrix = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
-
 final List<String> allKeys = <String>[
-  for (final List<Map<String, dynamic>> item in keyboardMatrix)
+  for (final List<Map<String, dynamic>> item in Game().keyboardMatrix_)
     for (final Map<String, dynamic> entry in item) entry["key"]
-];
-
-List<Map<String, String>> endGameAnalytics = <Map<String, String>>[
-  <String, String>{"value": "0", "text": "Played"},
-  <String, String>{"value": "0", "text": "Win %"},
-  <String, String>{"value": "0", "text": "Current\nStreak"},
-  <String, String>{"value": "0", "text": "Max Streak"},
 ];
 
 class Game {
@@ -101,14 +53,54 @@ class Game {
   int lineIndex_ = 0;
   int columnIndex_ = 0;
 
-  List<List<Map<String, dynamic>>> gameMatrix_ = gameMatrix;
+  List<List<Map<String, dynamic>>> gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
 
-  List<List<Map<String, dynamic>>> keyboardMatrix_ = keyboardMatrix;
+  List<List<Map<String, dynamic>>> keyboardMatrix_ = <List<Map<String, dynamic>>>[
+    <Map<String, dynamic>>[
+      <String, dynamic>{"key": 'Q', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'W', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'E', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'R', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'T', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'Y', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'U', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'I', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'O', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'P', "type": keyState.lastOrNull},
+    ],
+    <Map<String, dynamic>>[
+      <String, dynamic>{"key": 'A', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'S', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'D', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'F', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'G', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'H', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'J', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'K', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'L', "type": keyState.lastOrNull},
+    ],
+    <Map<String, dynamic>>[
+      <String, dynamic>{"key": 'ENTER', "size": 2, "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'Z', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'X', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'C', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'V', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'B', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'N', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'M', "type": keyState.lastOrNull},
+      <String, dynamic>{"key": 'DEL', "size": 2, "type": keyState.lastOrNull},
+    ],
+  ];
 
   bool cellScale_ = false;
   bool rowRotation_ = false;
 
-  List<Map<String, String>> endGameAnalytics_ = endGameAnalytics;
+  List<Map<String, String>> endGameAnalytics_ = <Map<String, String>>[
+    <String, String>{"value": "0", "text": "Played"},
+    <String, String>{"value": "0", "text": "Win %"},
+    <String, String>{"value": "0", "text": "Current\nStreak"},
+    <String, String>{"value": "0", "text": "Max Streak"},
+  ];
 
   Game();
 
@@ -134,3 +126,5 @@ class Game {
       ..keyboardMatrix_ = json["keyboardMatrix"] as List<List<Map<String, dynamic>>>;
   }
 }
+
+//add animation effects to the cells

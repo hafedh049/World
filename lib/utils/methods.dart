@@ -130,79 +130,68 @@ List<Widget> buidKeyboard(BuildContext context) {
                         }
                         keyboardKey.currentState!.setState(() {});
 
-                        //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-                        currentGame!.lineIndex_ = 0;
-                        currentGame!.columnIndex_ = 0;
+                        //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
                       } else if (currentGame!.columnIndex_ == cellsSize) {
                         for (int letter = 0; letter < cellsSize; letter++) {
-                          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == magicWord[letter]) {
-                            gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(0);
-                            findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(0);
-                          } else if (magicWord.contains(gameMatrix[lineIndex][letter]["key"])) {
-                            gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(2);
-                            findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(2);
+                          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
+                            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
+                            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
+                          } else if (currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
+                            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(2);
+                            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(2);
                           } else {
-                            gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(1);
-                            findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(1);
+                            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(1);
+                            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(1);
                           }
                         }
 
-                        rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
+                        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
                         await Future.delayed(50.ms);
-                        rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
+                        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = false);
 
                         double wait = 0;
-                        for (int column = 0; column < magicWord.length; column++) {
+                        for (int column = 0; column < cellsSize; column++) {
                           await Future.delayed(wait.ms);
-                          cellsStates[lineIndex][column].currentState!.setState(() {});
+                          cellsStates[currentGame!.lineIndex_][column].currentState!.setState(() {});
                           wait += 50;
                         }
                         keyboardKey.currentState!.setState(() {});
                         if (checkEndGame()) {
                           endGame(context);
-                          await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-                          lineIndex = 0;
-                          columnIndex = 0;
-                          gameMatrix = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(magicWord.length, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
-                          for (final List<Map<String, dynamic>> item in keyboardMatrix) {
-                            for (Map<String, dynamic> map in item) {
-                              map["type"] = keyState.lastOrNull;
-                            }
-                          }
-                          updater(() {});
+                          //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
                           return;
                         }
-                        lineIndex += 1;
-                        columnIndex = 0;
+                        currentGame!.lineIndex_ += 1;
+                        currentGame!.columnIndex_= 0;
                       }
-                    } else if (keyboardMatrix[indexI][indexJ]["key"] == "DEL") {
-                      if (columnIndex > 0) {
-                        columnIndex -= 1;
-                        gameMatrix[lineIndex][columnIndex]["key"] = '';
-                        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = true);
+                    } else if (currentGame!.keyboardMatrix_[indexI][indexJ]["key"] == "DEL") {
+                      if (currentGame!.columnIndex_> 0) {
+                        currentGame!.columnIndex_-= 1;
+                        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_]["key"] = '';
+                        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
                         await Future.delayed(50.ms);
-                        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = false);
-                        await addKVHive("lineIndex", lineIndex);
-                        await addKVHive("columnIndex", columnIndex);
+                        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
+                        //await addKVHive("lineIndex", lineIndex);
+                        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
                       }
                     } else {
-                      if (columnIndex < magicWord.length) {
-                        gameMatrix[lineIndex][columnIndex]["key"] = keyboardMatrix[indexI][indexJ]["key"].toUpperCase();
-                        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = true);
+                      if (currentGame!.columnIndex_< cellsSize) {
+                        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_]["key"] = currentGame!.keyboardMatrix_[indexI][indexJ]["key"].toUpperCase();
+                        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
                         await Future.delayed(50.ms);
-                        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = false);
-                        columnIndex += 1;
-                        await addKVHive("lineIndex", lineIndex);
-                        await addKVHive("columnIndex", columnIndex);
+                        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
+                        currentGame!.columnIndex_+= 1;
+                        //await addKVHive("lineIndex", lineIndex);
+                        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
                       }
                     }
                   },
                   child: AnimatedContainer(
                     duration: 1.seconds,
-                    width: keyboardMatrix[indexI][indexJ]["size"] == 2 ? 80 : 60,
+                    width: currentGame!.keyboardMatrix_[indexI][indexJ]["size"] == 2 ? 80 : 60,
                     height: 60,
-                    decoration: BoxDecoration(color: keyboardMatrix[indexI][indexJ]["key"].length > 1 ? blue : calculateColor(keyboardMatrix[indexI][indexJ]["type"]), borderRadius: BorderRadius.circular(5)),
-                    child: Center(child: Text(keyboardMatrix[indexI][indexJ]["key"], style: const TextStyle(color: white, fontSize: 20))),
+                    decoration: BoxDecoration(color: currentGame!.keyboardMatrix_[indexI][indexJ]["key"].length > 1 ? blue : calculateColor(currentGame!.keyboardMatrix_[indexI][indexJ]["type"]), borderRadius: BorderRadius.circular(5)),
+                    child: Center(child: Text(currentGame!.keyboardMatrix_[indexI][indexJ]["key"], style: const TextStyle(color: white, fontSize: 20))),
                   ),
                 ),
               ),
@@ -217,87 +206,85 @@ List<Widget> buidKeyboard(BuildContext context) {
 void rawKeyboard(RawKeyEvent event, BuildContext context) async {
   if (event is RawKeyDownEvent) {
     if (event.isKeyPressed(LogicalKeyboardKey.enter) || event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
-      if (lineIndex == (6 - 1) && columnIndex == magicWord.length) {
+      if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_== cellsSize) {
         endGame(context);
 
-        rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
+        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
         await Future.delayed(50.ms);
-        rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
+        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = false);
 
         double wait = 0;
-        for (int column = 0; column < magicWord.length; column++) {
+        for (int column = 0; column < cellsSize; column++) {
           await Future.delayed(wait.ms);
-          cellsStates[lineIndex - 1][column].currentState!.setState(() {});
+          cellsStates[currentGame!.lineIndex_ - 1][column].currentState!.setState(() {});
           wait += 50;
         }
         keyboardKey.currentState!.setState(() {});
 
-        await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-        lineIndex = 0;
-        columnIndex = 0;
-      } else if (columnIndex == magicWord.length) {
-        for (int letter = 0; letter < magicWord.length; letter++) {
-          if (gameMatrix[lineIndex][letter]["key"] == magicWord[letter]) {
-            gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(0);
-            findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(0);
-          } else if (magicWord.contains(gameMatrix[lineIndex][letter]["key"])) {
-            gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(2);
-            findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(2);
+        //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
+      } else if (currentGame!.columnIndex_== cellsSize) {
+        for (int letter = 0; letter < cellsSize; letter++) {
+          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == magicWord[letter]) {
+            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
+            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
+          } else if (magicWord.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
+            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(2);
+            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(2);
           } else {
-            gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(1);
-            findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(1);
+            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(1);
+            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(1);
           }
         }
 
-        rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
+        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => rowRotation = true);
         await Future.delayed(50.ms);
-        rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
+        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => rowRotation = false);
 
         double wait = 0;
-        for (int column = 0; column < magicWord.length; column++) {
+        for (int column = 0; column < cellsSize; column++) {
           await Future.delayed(wait.ms);
-          cellsStates[lineIndex][column].currentState!.setState(() {});
+          cellsStates[currentGame!.lineIndex_][column].currentState!.setState(() {});
           wait += 50;
         }
         keyboardKey.currentState!.setState(() {});
 
         if (checkEndGame()) {
           endGame(context);
-          await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-          lineIndex = 0;
-          columnIndex = 0;
+          await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
+          currentGame!.lineIndex_ = 0;
+          currentGame!.columnIndex_= 0;
           return;
         }
 
-        lineIndex += 1;
-        columnIndex = 0;
+        currentGame!.lineIndex_ += 1;
+        currentGame!.columnIndex_= 0;
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.backspace) || event.isKeyPressed(LogicalKeyboardKey.delete)) {
-      if (columnIndex > 0) {
-        columnIndex -= 1;
-        gameMatrix[lineIndex][columnIndex]["key"] = '';
-        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = true);
+      if (currentGame!.columnIndex_> 0) {
+        currentGame!.columnIndex_-= 1;
+        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_["key"] = '';
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = true);
         await Future.delayed(50.ms);
-        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = false);
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = false);
         await addKVHive("lineIndex", lineIndex);
-        await addKVHive("columnIndex", columnIndex);
+        await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
       }
     } else if (event.character != null && allKeys.contains(event.character!.toUpperCase())) {
-      if (columnIndex < magicWord.length) {
-        gameMatrix[lineIndex][columnIndex]["key"] = event.character!.toUpperCase();
-        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = true);
+      if (currentGame!.columnIndex_< cellsSize) {
+        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_["key"] = event.character!.toUpperCase();
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = true);
         await Future.delayed(50.ms);
-        cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = false);
-        columnIndex += 1;
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = false);
+        currentGame!.columnIndex_+= 1;
         await addKVHive("lineIndex", lineIndex);
-        await addKVHive("columnIndex", columnIndex);
+        await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
       }
     }
   }
 }
 
 bool checkEndGame() {
-  for (final Map<String, dynamic> entry in gameMatrix[lineIndex]) {
+  for (final Map<String, dynamic> entry in currentGame!.gameMatrix_[currentGame!.lineIndex_]) {
     if (entry["type"] != "CORRECT") {
       return false;
     }
@@ -307,7 +294,7 @@ bool checkEndGame() {
 
 int calculateGuessDistribution(int rowIndex) {
   int sum = 0;
-  for (final Map<String, dynamic> entry in gameMatrix[rowIndex]) {
+  for (final Map<String, dynamic> entry in currentGame!.gameMatrix_[rowIndex]) {
     if (entry["type"] == "CORRECT") {
       sum += 1;
     }
