@@ -162,11 +162,11 @@ List<Widget> buidKeyboard(BuildContext context) {
                           return;
                         }
                         currentGame!.lineIndex_ += 1;
-                        currentGame!.columnIndex_= 0;
+                        currentGame!.columnIndex_ = 0;
                       }
                     } else if (currentGame!.keyboardMatrix_[indexI][indexJ]["key"] == "DEL") {
-                      if (currentGame!.columnIndex_> 0) {
-                        currentGame!.columnIndex_-= 1;
+                      if (currentGame!.columnIndex_ > 0) {
+                        currentGame!.columnIndex_ -= 1;
                         currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_]["key"] = '';
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
                         await Future.delayed(50.ms);
@@ -175,12 +175,12 @@ List<Widget> buidKeyboard(BuildContext context) {
                         //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
                       }
                     } else {
-                      if (currentGame!.columnIndex_< cellsSize) {
+                      if (currentGame!.columnIndex_ < cellsSize) {
                         currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_]["key"] = currentGame!.keyboardMatrix_[indexI][indexJ]["key"].toUpperCase();
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
                         await Future.delayed(50.ms);
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
-                        currentGame!.columnIndex_+= 1;
+                        currentGame!.columnIndex_ += 1;
                         //await addKVHive("lineIndex", lineIndex);
                         //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
                       }
@@ -206,7 +206,7 @@ List<Widget> buidKeyboard(BuildContext context) {
 void rawKeyboard(RawKeyEvent event, BuildContext context) async {
   if (event is RawKeyDownEvent) {
     if (event.isKeyPressed(LogicalKeyboardKey.enter) || event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
-      if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_== cellsSize) {
+      if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_ == cellsSize) {
         endGame(context);
 
         rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
@@ -222,12 +222,12 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         keyboardKey.currentState!.setState(() {});
 
         //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
-      } else if (currentGame!.columnIndex_== cellsSize) {
+      } else if (currentGame!.columnIndex_ == cellsSize) {
         for (int letter = 0; letter < cellsSize; letter++) {
-          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == magicWord[letter]) {
+          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
             findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
-          } else if (magicWord.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
+          } else if (currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(2);
             findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(2);
           } else {
@@ -236,9 +236,9 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
           }
         }
 
-        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => rowRotation = true);
+        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
         await Future.delayed(50.ms);
-        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => rowRotation = false);
+        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = false);
 
         double wait = 0;
         for (int column = 0; column < cellsSize; column++) {
@@ -250,34 +250,32 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
 
         if (checkEndGame()) {
           endGame(context);
-          await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
-          currentGame!.lineIndex_ = 0;
-          currentGame!.columnIndex_= 0;
+          //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
           return;
         }
 
         currentGame!.lineIndex_ += 1;
-        currentGame!.columnIndex_= 0;
+        currentGame!.columnIndex_ = 0;
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.backspace) || event.isKeyPressed(LogicalKeyboardKey.delete)) {
-      if (currentGame!.columnIndex_> 0) {
-        currentGame!.columnIndex_-= 1;
-        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_["key"] = '';
-        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = true);
+      if (currentGame!.columnIndex_ > 0) {
+        currentGame!.columnIndex_ -= 1;
+        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_]["key"] = '';
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
         await Future.delayed(50.ms);
-        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = false);
-        await addKVHive("lineIndex", lineIndex);
-        await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
+        //await addKVHive("lineIndex", lineIndex);
+        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
       }
     } else if (event.character != null && allKeys.contains(event.character!.toUpperCase())) {
-      if (currentGame!.columnIndex_< cellsSize) {
-        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_["key"] = event.character!.toUpperCase();
-        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = true);
+      if (currentGame!.columnIndex_ < cellsSize) {
+        currentGame!.gameMatrix_[currentGame!.lineIndex_][currentGame!.columnIndex_]["key"] = event.character!.toUpperCase();
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
         await Future.delayed(50.ms);
-        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_.currentState!.setState(() => cellScale = false);
-        currentGame!.columnIndex_+= 1;
-        await addKVHive("lineIndex", lineIndex);
-        await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
+        cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
+        currentGame!.columnIndex_ += 1;
+        //await addKVHive("lineIndex", lineIndex);
+        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
       }
     }
   }
@@ -303,6 +301,8 @@ int calculateGuessDistribution(int rowIndex) {
 }
 
 void endGame(BuildContext context) async {
+  //calc stat to do
+
   await showModalBottomSheet(
     context: context,
     builder: (BuildContext context) => Container(
