@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:world/utils/methods.dart';
 import 'package:world/welcome.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await load();
   runApp(const Main());
 }
 

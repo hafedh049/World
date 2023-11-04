@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world/drawer.dart';
+import 'package:world/error.dart';
 import 'package:world/utils/methods.dart';
 import 'package:world/utils/shared.dart';
+import 'package:world/wait.dart';
 
 class World extends StatefulWidget {
   const World({super.key});
@@ -28,9 +30,9 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
         future: load(),
         builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
           return snapshot.hasError
-              ? EError()
+              ? EError(error: snapshot.error.toString())
               : snapshot.connectionState == ConnectionState.waiting
-                  ? Wait()
+                  ? const Wait()
                   : RawKeyboardListener(
                       focusNode: FocusNode(),
                       autofocus: true,
