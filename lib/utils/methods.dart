@@ -352,17 +352,17 @@ void endGame(BuildContext context) async {
   );
 }
 
-Future<Map<String, String>> getMagicWord() async {
-  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<Map<String, String>>)[Random().nextInt(15000)];
+Future<Map<String, dynamic>> getMagicWord() async {
+  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<dynamic>)[Random().nextInt(15000)];
 }
 
 Future<void> load() async {
   world = await openHiveBox();
-  games = world!.get("games");
-  if (games.isEmpty || games.last["state"] != "INCOMPLETE") {
+  games = world!.get("games") as List<Map<String, dynamic>>?;
+  if (games == null || games!.isEmpty || games!.last["state"] != "INCOMPLETE") {
     currentGame = Game();
     currentGame!.magicWord_ = await getMagicWord();
   } else {
-    currentGame = Game.fromJson(games.last);
+    currentGame = Game.fromJson(games!.last);
   }
 }

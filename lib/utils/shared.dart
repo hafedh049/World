@@ -32,7 +32,7 @@ final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
 ];
 
 Box? world;
-List<Map<String, dynamic>> games = <Map<String, dynamic>>[];
+List<Map<String, dynamic>>? games = <Map<String, dynamic>>[];
 Game? currentGame;
 
 final List<List<GlobalKey<State>>> cellsStates = List<List<GlobalKey<State>>>.generate(6, (int _) => List<GlobalKey<State>>.generate(cellsSize, (int __) => GlobalKey<State>()));
@@ -48,7 +48,7 @@ final List<String> allKeys = <String>[
 class Game {
   String state_ = "INCOMPLETE";
 
-  Map<String, String> magicWord_ = <String, String>{};
+  Map<String, dynamic> magicWord_ = <String, dynamic>{};
 
   int lineIndex_ = 0;
   int columnIndex_ = 0;
