@@ -10,6 +10,8 @@ class DDrawer extends StatefulWidget {
 }
 
 class _DDrawerState extends State<DDrawer> {
+  bool _cocktailShaker = false;
+  final Widget _logo = Image.asset("assets/w.png", width: 100, height: 100);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -20,7 +22,20 @@ class _DDrawerState extends State<DDrawer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Center(child: Image.asset("assets/w.png", width: 100, height: 100).animate(onComplete: (AnimationController controller) => controller.repeat()).rotate(duration: 5.seconds)),
+              Center(
+                child: StatefulBuilder(
+                  builder: (BuildContext context, void Function(void Function()) _) {
+                    return InkWell(
+                      hoverColor: transparent,
+                      splashColor: transparent,
+                      highlightColor: transparent,
+                      onTap: () => true,
+                      onHover: (bool value) => _(() => _cocktailShaker = value),
+                      child: _cocktailShaker ? _logo.animate().shakeX() : _logo,
+                    );
+                  },
+                ),
+              ),
               const SizedBox(height: 30),
               for (final Map<String, dynamic> entry in menu)
                 Padding(

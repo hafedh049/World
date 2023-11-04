@@ -111,7 +111,14 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
                       icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: _menuProgress, size: 35),
                     ),
                     const Spacer(),
-                    Text(gameTitle[0] + gameTitle.substring(1).toLowerCase(), style: const TextStyle(color: blue, fontSize: 35, fontWeight: FontWeight.bold)).animate(onComplete: (AnimationController controller) => controller.repeat(reverse: true)).shimmer(duration: 2.seconds, colors: <Color>[blue.withOpacity(.3), white.withOpacity(.3)]),
+                    RichText(
+                      text: TextSpan(
+                        children: <TextSpan>[
+                          TextSpan(text: gameTitle[0], style: const TextStyle(color: white, fontSize: 40, fontWeight: FontWeight.bold)),
+                          TextSpan(text: gameTitle.substring(1).toLowerCase(), style: const TextStyle(color: blue, fontSize: 35, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
                     const Spacer(),
                   ],
                 ),
