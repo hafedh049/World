@@ -10,11 +10,12 @@ import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:world/utils/shared.dart';
 
-Future<Box> openHiveBox(String box) async {
-  if (!Hive.isBoxOpen(box) && !kIsWeb) {
+// open box = create collection
+Future<Box> openHiveBox() async {
+  if (!Hive.isBoxOpen("games") && !kIsWeb) {
     Hive.init((await getApplicationDocumentsDirectory()).path);
   }
-  return Hive.openBox(box);
+  return Hive.openBox("games");
 }
 
 Future<void> addKVHive(String key, dynamic value) async => await world!.put(key, value);
@@ -132,6 +133,13 @@ List<Widget> buidKeyboard(BuildContext context, void Function(void Function()) u
                         await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
                         lineIndex = 0;
                         columnIndex = 0;
+                        gameMatrix = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(magicWord.length, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
+                        for (final List<Map<String, dynamic>> item in keyboardMatrix) {
+                          for (Map<String, dynamic> map in item) {
+                            map["type"] = keyState.lastOrNull;
+                          }
+                        }
+                        updater(() {});
                       } else if (columnIndex == magicWord.length) {
                         for (int letter = 0; letter < magicWord.length; letter++) {
                           if (gameMatrix[lineIndex][letter]["key"] == magicWord[letter]) {
@@ -363,3 +371,5 @@ void endGame(BuildContext context) async {
     ),
   );
 }
+
+Future<void> load() async {}
