@@ -118,6 +118,17 @@ List<Widget> buidKeyboard() {
                         await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
                         lineIndex = 0;
                         columnIndex = 0;
+                        rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
+                        await Future.delayed(50.ms);
+                        rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
+
+                        double wait = 0;
+                        for (int column = 0; column < magicWord.length; column++) {
+                          await Future.delayed(wait.ms);
+                          cellsStates[lineIndex - 1][column].currentState!.setState(() {});
+                          wait += 50;
+                        }
+                        keyboardKey.currentState!.setState(() {});
                       } else if (columnIndex == magicWord.length) {
                         for (int letter = 0; letter < magicWord.length; letter++) {
                           if (gameMatrix[lineIndex][letter]["key"] == magicWord[letter]) {
@@ -133,18 +144,18 @@ List<Widget> buidKeyboard() {
                         }
                         lineIndex += 1;
                         columnIndex = 0;
-                      }
-                      rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
-                      await Future.delayed(50.ms);
-                      rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
+                        rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
+                        await Future.delayed(50.ms);
+                        rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
 
-                      double wait = 0;
-                      for (int column = 0; column < magicWord.length; column++) {
-                        await Future.delayed(wait.ms);
-                        cellsStates[lineIndex - 1][column].currentState!.setState(() {});
-                        wait += 50;
+                        double wait = 0;
+                        for (int column = 0; column < magicWord.length; column++) {
+                          await Future.delayed(wait.ms);
+                          cellsStates[lineIndex - 1][column].currentState!.setState(() {});
+                          wait += 50;
+                        }
+                        keyboardKey.currentState!.setState(() {});
                       }
-                      keyboardKey.currentState!.setState(() {});
                     } else if (keyboardMatrix[indexI][indexJ]["key"] == "DEL") {
                       if (columnIndex > 0) {
                         columnIndex -= 1;
