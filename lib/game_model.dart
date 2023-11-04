@@ -8,9 +8,9 @@ class Game {
   int lineIndex_ = 0;
   int columnIndex_ = 0;
 
-  List<List<Map<String, dynamic>>> gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
+  List gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
 
-  List<List<Map<String, dynamic>>> keyboardMatrix_ = <List<Map<String, dynamic>>>[
+  List keyboardMatrix_ = <List<Map<String, dynamic>>>[
     <Map<String, dynamic>>[
       <String, dynamic>{"key": 'Q', "type": keyState.lastOrNull},
       <String, dynamic>{"key": 'W', "type": keyState.lastOrNull},
@@ -69,9 +69,8 @@ class Game {
       ..magicWord_ = json["magicWord"].cast<String, dynamic>()
       ..lineIndex_ = json["lineIndex"] as int
       ..columnIndex_ = json["columnIndex"] as int
-      ..gameMatrix_ = List.castFrom<List<dynamic>, List<Map<String, dynamic>>>(json["gameMatrix"])
-      ..keyboardMatrix_ = List.castFrom<List<dynamic>, List<Map<String, dynamic>>>(json["keyboardMatrix"]);
-    print(g);
+      ..gameMatrix_ = json["gameMatrix"]
+      ..keyboardMatrix_ = json["keyboardMatrix"];
 
     return g;
   }
