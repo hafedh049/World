@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world/drawer.dart';
 import 'package:world/utils/methods.dart';
@@ -28,77 +27,7 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
     return RawKeyboardListener(
       focusNode: FocusNode(),
       autofocus: true,
-      onKey: (RawKeyEvent event) async {
-        if (event is RawKeyDownEvent) {
-          if (event.isKeyPressed(LogicalKeyboardKey.enter) || event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
-            if (lineIndex == (6 - 1) && columnIndex == magicWord.length) {
-              endGame(context);
-
-              rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
-              await Future.delayed(50.ms);
-              rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
-
-              double wait = 0;
-              for (int column = 0; column < magicWord.length; column++) {
-                await Future.delayed(wait.ms);
-                cellsStates[lineIndex - 1][column].currentState!.setState(() {});
-                wait += 50;
-              }
-              keyboardKey.currentState!.setState(() {});
-
-              await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-              lineIndex = 0;
-              columnIndex = 0;
-            } else if (columnIndex == magicWord.length) {
-              for (int letter = 0; letter < magicWord.length; letter++) {
-                if (gameMatrix[lineIndex][letter]["key"] == magicWord[letter]) {
-                  gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(0);
-                  findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(0);
-                } else if (magicWord.contains(gameMatrix[lineIndex][letter]["key"])) {
-                  gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(2);
-                  findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(2);
-                } else {
-                  gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(1);
-                  findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(1);
-                }
-              }
-              lineIndex += 1;
-              columnIndex = 0;
-              rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
-              await Future.delayed(50.ms);
-              rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
-
-              double wait = 0;
-              for (int column = 0; column < magicWord.length; column++) {
-                await Future.delayed(wait.ms);
-                cellsStates[lineIndex - 1][column].currentState!.setState(() {});
-                wait += 50;
-              }
-              keyboardKey.currentState!.setState(() {});
-            }
-          } else if (event.isKeyPressed(LogicalKeyboardKey.backspace) || event.isKeyPressed(LogicalKeyboardKey.delete)) {
-            if (columnIndex > 0) {
-              columnIndex -= 1;
-              gameMatrix[lineIndex][columnIndex]["key"] = '';
-              cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = true);
-              await Future.delayed(50.ms);
-              cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = false);
-              await addKVHive("lineIndex", lineIndex);
-              await addKVHive("columnIndex", columnIndex);
-            }
-          } else if (event.character != null && allKeys.contains(event.character!.toUpperCase())) {
-            if (columnIndex < magicWord.length) {
-              gameMatrix[lineIndex][columnIndex]["key"] = event.character!.toUpperCase();
-              cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = true);
-              await Future.delayed(50.ms);
-              cellsStates[lineIndex][columnIndex].currentState!.setState(() => cellScale = false);
-              columnIndex += 1;
-              await addKVHive("lineIndex", lineIndex);
-              await addKVHive("columnIndex", columnIndex);
-            }
-          }
-        }
-      },
+      onKey: (RawKeyEvent value) => rawKeyboard(value, context),
       child: Scaffold(
         drawer: const DDrawer(),
         key: _drawerKey,
@@ -144,7 +73,7 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
               StatefulBuilder(
                 key: keyboardKey,
                 builder: (BuildContext context, void Function(void Function()) _) {
-                  return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Column(mainAxisSize: MainAxisSize.min, children: buidKeyboard()));
+                  return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Column(mainAxisSize: MainAxisSize.min, children: buidKeyboard(context)));
                 },
               ),
             ],
