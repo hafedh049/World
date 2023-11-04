@@ -145,19 +145,27 @@ List<Widget> buidKeyboard(BuildContext context) {
                             findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(1);
                           }
                         }
-                        lineIndex += 1;
-                        columnIndex = 0;
-                        rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
+
+                        rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
                         await Future.delayed(50.ms);
-                        rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
+                        rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
 
                         double wait = 0;
                         for (int column = 0; column < magicWord.length; column++) {
                           await Future.delayed(wait.ms);
-                          cellsStates[lineIndex - 1][column].currentState!.setState(() {});
+                          cellsStates[lineIndex][column].currentState!.setState(() {});
                           wait += 50;
                         }
                         keyboardKey.currentState!.setState(() {});
+                        if (checkEndGame()) {
+                          endGame(context);
+                          await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
+                          lineIndex = 0;
+                          columnIndex = 0;
+                          return;
+                        }
+                        lineIndex += 1;
+                        columnIndex = 0;
                       }
                     } else if (keyboardMatrix[indexI][indexJ]["key"] == "DEL") {
                       if (columnIndex > 0) {
