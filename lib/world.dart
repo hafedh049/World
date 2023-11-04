@@ -29,9 +29,10 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
     return FutureBuilder<void>(
       future: load(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return snapshot.hasError
+        return /*snapshot.hasError
             ? EError(error: snapshot.error.toString())
-            : snapshot.connectionState == ConnectionState.waiting
+            : */
+            snapshot.connectionState == ConnectionState.waiting
                 ? const Wait()
                 : RawKeyboardListener(
                     focusNode: FocusNode(),
@@ -60,6 +61,17 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
                                       _menuState = !_menuState;
                                     },
                                     icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: _menuProgress, size: 35),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: StatefulBuilder(
+                                      key: saveStateKey,
+                                      builder: (BuildContext context, void Function(void Function()) _) {
+                                        return AnimatedOpacity(opacity: save ? 1 : 0, duration: 1000.ms, child: const CircularProgressIndicator(color: white));
+                                      },
+                                    ),
                                   ),
                                   const Spacer(),
                                   RichText(

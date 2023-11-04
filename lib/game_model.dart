@@ -64,12 +64,15 @@ class Game {
   }
 
   factory Game.fromJson(Map<String, dynamic> json) {
-    return Game()
+    var g = Game()
       ..state_ = json["state"] as String
-      ..magicWord_ = json["magicWord"] as Map<String, String>
+      ..magicWord_ = json["magicWord"].cast<String, dynamic>()
       ..lineIndex_ = json["lineIndex"] as int
       ..columnIndex_ = json["columnIndex"] as int
-      ..gameMatrix_ = json["gameMatrix"] as List<List<Map<String, dynamic>>>
-      ..keyboardMatrix_ = json["keyboardMatrix"] as List<List<Map<String, dynamic>>>;
+      ..gameMatrix_ = List.castFrom<List<dynamic>, List<Map<String, dynamic>>>(json["gameMatrix"])
+      ..keyboardMatrix_ = List.castFrom<List<dynamic>, List<Map<String, dynamic>>>(json["keyboardMatrix"]);
+    print(g);
+
+    return g;
   }
 }

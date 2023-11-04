@@ -32,14 +32,16 @@ final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
   <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes},
 ];
 
-Box? world;
-List<Map<String, dynamic>>? games = <Map<String, dynamic>>[];
+Box<List<dynamic>>? world;
+List<dynamic>? games = <Map<String, dynamic>>[];
 Game? currentGame;
 
 final List<List<GlobalKey<State>>> cellsStates = List<List<GlobalKey<State>>>.generate(6, (int _) => List<GlobalKey<State>>.generate(cellsSize, (int __) => GlobalKey<State>()));
 final List<GlobalKey<State>> rowsStates = List<GlobalKey<State>>.generate(6, (int _) => GlobalKey<State>());
-
 final GlobalKey<State> keyboardKey = GlobalKey<State>();
+final GlobalKey<State> saveStateKey = GlobalKey<State>();
+
+bool save = false;
 
 final List<String> allKeys = <String>[
   for (final List<Map<String, dynamic>> item in Game().keyboardMatrix_)

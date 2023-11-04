@@ -13,26 +13,22 @@ import 'package:world/game_model.dart';
 import 'package:world/utils/shared.dart';
 
 // open box = create collection
-Future<Box> openHiveBox() async {
+Future<Box<List<dynamic>>> openHiveBox() async {
   if (!Hive.isBoxOpen("games") && !kIsWeb) {
     Hive.init((await getApplicationDocumentsDirectory()).path);
   }
   return Hive.openBox("games");
 }
 
-Future<void> addKVHive(String key, dynamic value) async => await world!.put(key, value);
+Future<void> addKVHive(String key, List<Map<String, dynamic>> value) async => await world!.put(key, value);
 
-Future<void> removeEntryHive(String key) async => await world!.delete(key);
-
-Color calculateColor(String type) {
-  return type == "UNSELECTED"
-      ? white.withOpacity(.1)
-      : type == "CORRECT"
-          ? green
-          : type == "MISPLACED"
-              ? yellow
-              : dark;
-}
+Color calculateColor(String type) => type == "UNSELECTED"
+    ? white.withOpacity(.1)
+    : type == "CORRECT"
+        ? green
+        : type == "MISPLACED"
+            ? yellow
+            : dark;
 
 Map<String, dynamic> findKey(String key) {
   return <Map<String, dynamic>>[for (List<Map<String, dynamic>> list in currentGame!.keyboardMatrix_) ...list].firstWhere((Map<String, dynamic> element) => element["key"] == key);
@@ -143,8 +139,7 @@ List<Widget> buidKeyboard(BuildContext context) {
                           wait += 50;
                         }
                         keyboardKey.currentState!.setState(() {});
-
-                        //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
+                        update();
                       } else if (currentGame!.columnIndex_ == cellsSize) {
                         for (int letter = 0; letter < cellsSize; letter++) {
                           if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
@@ -171,12 +166,13 @@ List<Widget> buidKeyboard(BuildContext context) {
                         }
                         keyboardKey.currentState!.setState(() {});
                         if (checkEndGame()) {
+                          update();
                           endGame(context);
-                          //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
                           return;
                         }
                         currentGame!.lineIndex_ += 1;
                         currentGame!.columnIndex_ = 0;
+                        update();
                       }
                     } else if (currentGame!.keyboardMatrix_[indexI][indexJ]["key"] == "DEL") {
                       if (currentGame!.columnIndex_ > 0) {
@@ -185,8 +181,7 @@ List<Widget> buidKeyboard(BuildContext context) {
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
                         await Future.delayed(50.ms);
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
-                        //await addKVHive("lineIndex", lineIndex);
-                        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
+                        update();
                       }
                     } else {
                       if (currentGame!.columnIndex_ < cellsSize) {
@@ -195,8 +190,7 @@ List<Widget> buidKeyboard(BuildContext context) {
                         await Future.delayed(50.ms);
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
                         currentGame!.columnIndex_ += 1;
-                        //await addKVHive("lineIndex", lineIndex);
-                        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
+                        update();
                       }
                     }
                   },
@@ -247,7 +241,7 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         }
         keyboardKey.currentState!.setState(() {});
 
-        //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
+        update();
       } else if (currentGame!.columnIndex_ == cellsSize) {
         for (int letter = 0; letter < cellsSize; letter++) {
           if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
@@ -276,12 +270,13 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
 
         if (checkEndGame()) {
           endGame(context);
-          //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
+          update();
           return;
         }
 
         currentGame!.lineIndex_ += 1;
         currentGame!.columnIndex_ = 0;
+        update();
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.backspace) || event.isKeyPressed(LogicalKeyboardKey.delete)) {
       if (currentGame!.columnIndex_ > 0) {
@@ -290,8 +285,7 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
         await Future.delayed(50.ms);
         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
-        //await addKVHive("lineIndex", lineIndex);
-        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
+        update();
       }
     } else if (event.character != null && allKeys.contains(event.character!.toUpperCase())) {
       if (currentGame!.columnIndex_ < cellsSize) {
@@ -300,11 +294,24 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         await Future.delayed(50.ms);
         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
         currentGame!.columnIndex_ += 1;
-        //await addKVHive("lineIndex", lineIndex);
-        //await addKVHive("currentGame!.columnIndex_, currentGame!.columnIndex_;
+        update();
       }
     }
   }
+}
+
+void update() async {
+  if (games == null || games!.isEmpty) {
+    games = <Map<String, dynamic>>[currentGame!.toJson()];
+  } else if (games!.last["state"] == "INCOMPLETE") {
+    games!.last = currentGame!.toJson();
+  } else {
+    games!.add(currentGame!.toJson());
+  }
+  world!.put("games", games!);
+  saveStateKey.currentState!.setState(() => save = true);
+  await Future.delayed(1000.ms);
+  saveStateKey.currentState!.setState(() => save = false);
 }
 
 bool isDuplicate(int index, String key) {
@@ -365,18 +372,26 @@ void endGame(BuildContext context) async {
           const SizedBox(height: 10),
           const Text("GUESS DISTRIBUTION", style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16)),
           const SizedBox(height: 10),
-          for (int index = 0; index < 6; index++)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text((index + 1).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
-                  const SizedBox(width: 5),
-                  Container(padding: const EdgeInsets.all(2), color: blue.withOpacity(.6), child: Text(calculateGuessDistribution(index).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14))),
-                ],
-              ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                for (int index = 0; index < 6; index++)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text((index + 1).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
+                        const SizedBox(width: 5),
+                        Container(padding: const EdgeInsets.all(2), color: blue.withOpacity(.6), child: Text(calculateGuessDistribution(index).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14))),
+                      ],
+                    ),
+                  ),
+              ],
             ),
+          ),
         ],
       ),
     ),
@@ -384,17 +399,17 @@ void endGame(BuildContext context) async {
 }
 
 Future<Map<String, dynamic>> getMagicWord() async {
-  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<dynamic>)[Random().nextInt(4287)];
+  return (json.decode(await rootBundle.loadString("assets/words_$cellsSize.json")))[Random().nextInt(4287)].cast<String, String>();
 }
 
 Future<void> load() async {
   world = await openHiveBox();
-  games = world!.get("games") as List<Map<String, dynamic>>?;
+
+  games = world!.get("games");
   if (games == null || games!.isEmpty || games!.last["state"] != "INCOMPLETE") {
     currentGame = Game();
     currentGame!.magicWord_ = await getMagicWord();
-    print(currentGame!.magicWord_);
   } else {
-    currentGame = Game.fromJson(games!.last);
+    currentGame = Game.fromJson(games!.last.cast<String, dynamic>());
   }
 }
