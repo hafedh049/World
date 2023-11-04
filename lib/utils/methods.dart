@@ -195,6 +195,56 @@ List<Widget> buidKeyboard() {
   return keyboard;
 }
 
+int calculateGuessDistribution(int rowIndex) {
+  int sum = 0;
+  for (final Map<String, dynamic> entry in gameMatrix[rowIndex]) {
+    if (entry["type"] == "CORRECT") {
+      sum += 1;
+    }
+  }
+  return sum;
+}
+
 void endGame(BuildContext context) async {
-  await showModalBottomSheet(context: context, builder: (BuildContext context) => Container());
+  await showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Container(
+      padding: const EdgeInsets.all(36),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const Text("STATISTICS", style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16)),
+          const SizedBox(height: 10),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              for (final Map<String, String> entry in endGameAnalytics)
+                Container(
+                  padding: const EdgeInsets.only(right: 24),
+                  child: Column(
+                    children: <Widget>[
+                      Text(entry["value"]!, style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 35)),
+                      const SizedBox(height: 5),
+                      Text(entry["text"]!, style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          const Text("GUESS DISTRIBUTION", style: TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 16)),
+          const SizedBox(height: 10),
+          for (int index = 0; index < 6; index++)
+            Row(
+              children: <Widget>[
+                Text((index + 1).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
+                const SizedBox(width: 5),
+                Container(padding: const EdgeInsets.all(2), child: Text(calculateGuessDistribution(index).toString(), style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14))),
+              ],
+            ),
+        ],
+      ),
+    ),
+  );
 }

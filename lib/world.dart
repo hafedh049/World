@@ -34,13 +34,9 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
             if (lineIndex == (6 - 1) && columnIndex == magicWord.length) {
               endGame(context);
 
-              rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
+              rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
               await Future.delayed(50.ms);
-              rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
-
-              await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-              lineIndex = 0;
-              columnIndex = 0;
+              rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
 
               double wait = 0;
               for (int column = 0; column < magicWord.length; column++) {
@@ -49,6 +45,10 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
                 wait += 50;
               }
               keyboardKey.currentState!.setState(() {});
+
+              await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
+              lineIndex = 0;
+              columnIndex = 0;
             } else if (columnIndex == magicWord.length) {
               for (int letter = 0; letter < magicWord.length; letter++) {
                 if (gameMatrix[lineIndex][letter]["key"] == magicWord[letter]) {

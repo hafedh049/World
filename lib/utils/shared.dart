@@ -86,4 +86,11 @@ final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
   <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes},
 ];
 
+final List<Map<String, String>> endGameAnalytics = <Map<String, String>>[
+  <String, String>{"value": "2", "text": "Played"},
+  <String, String>{"value": "0", "text": "Win %"},
+  <String, String>{"value": "0", "text": "Current\nStreak"},
+  <String, String>{"value": "0", "text": "Max Streak"},
+];
+
 //add animation effects to the cells
