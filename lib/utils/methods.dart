@@ -372,4 +372,16 @@ void endGame(BuildContext context) async {
   );
 }
 
-Future<void> load() async {}
+String getMagicWord(int size){
+  return 
+}
+
+Future<void> load() async {
+  world = await openHiveBox();
+  games = world!.get("games");
+  if (games.isEmpty || games.last["state"] != "INCOMPLETE") {
+    currentGame = Game();
+  }else{
+    currentGame = Game.fromJson(games.last);
+  }
+}
