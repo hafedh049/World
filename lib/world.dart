@@ -29,10 +29,9 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
     return FutureBuilder<void>(
       future: load(),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-        return /*snapshot.hasError
+        return snapshot.hasError
             ? EError(error: snapshot.error.toString())
-            : */
-            snapshot.connectionState == ConnectionState.waiting
+            : snapshot.connectionState == ConnectionState.waiting
                 ? const Wait()
                 : RawKeyboardListener(
                     focusNode: FocusNode(),

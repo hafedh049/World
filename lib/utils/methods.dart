@@ -114,8 +114,6 @@ List<Widget> buidKeyboard(BuildContext context) {
                   onTap: () async {
                     if (currentGame!.keyboardMatrix_[indexI][indexJ]["key"] == "ENTER") {
                       if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_ == cellsSize) {
-                        endGame(context);
-
                         for (int letter = 0; letter < cellsSize; letter++) {
                           if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
                             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
@@ -139,7 +137,8 @@ List<Widget> buidKeyboard(BuildContext context) {
                           wait += 50;
                         }
                         keyboardKey.currentState!.setState(() {});
-                        update();
+                        await update();
+                        endGame(context);
                       } else if (currentGame!.columnIndex_ == cellsSize) {
                         for (int letter = 0; letter < cellsSize; letter++) {
                           if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
@@ -166,7 +165,7 @@ List<Widget> buidKeyboard(BuildContext context) {
                         }
                         keyboardKey.currentState!.setState(() {});
                         if (checkEndGame()) {
-                          update();
+                          await update();
                           endGame(context);
                           return;
                         }
@@ -215,8 +214,6 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
   if (event is RawKeyDownEvent) {
     if (event.isKeyPressed(LogicalKeyboardKey.enter) || event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
       if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_ == cellsSize) {
-        endGame(context);
-
         for (int letter = 0; letter < cellsSize; letter++) {
           if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
@@ -240,8 +237,8 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
           wait += 50;
         }
         keyboardKey.currentState!.setState(() {});
-
-        update();
+        await update();
+        endGame(context);
       } else if (currentGame!.columnIndex_ == cellsSize) {
         for (int letter = 0; letter < cellsSize; letter++) {
           if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
@@ -269,8 +266,8 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         keyboardKey.currentState!.setState(() {});
 
         if (checkEndGame()) {
+          await update();
           endGame(context);
-          update();
           return;
         }
 
@@ -300,13 +297,13 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
   }
 }
 
-void update() async {
+Future<void> update() async {
   if (games == null || games!.isEmpty) {
     games = <Map<String, dynamic>>[currentGame!.toJson()];
   } else if (games!.last["state"] == "INCOMPLETE") {
     games!.last = currentGame!.toJson();
   } else {
-    games!.add(currentGame!.toJson());
+    games!.add((currentGame!..state_ = checkEndGame() ? "WIN" : "LOSS").toJson());
   }
   world!.put("games", games!);
   saveStateKey.currentState!.setState(() => save = true);
@@ -338,9 +335,56 @@ int calculateGuessDistribution(int rowIndex) {
   return sum;
 }
 
-void endGame(BuildContext context) async {
-  //calc stat to do
+int totalPlayed() {
+  return games == null ? 0 : games!.length;
+}
 
+int winPercentage() {
+  return games == null ? 0 : (games!.where((dynamic element) => element["state"] == "WIN").length / totalPlayed() * 100).toInt();
+}
+
+int currentStreak() {
+  if (games == null || games!.isEmpty) {
+    return 0;
+  } else {
+    int count = 0;
+    List clone = games!.reversed.toList();
+    for (dynamic item in clone) {
+      if (item["state"] == "WIN") {
+        count += 1;
+      } else {
+        break;
+      }
+    }
+    return count;
+  }
+}
+
+int longuestStreak() {
+  if (games == null || games!.isEmpty) {
+    return 0;
+  } else {
+    int count = 0;
+    int maxCount = 0;
+    for (dynamic item in games!) {
+      if (item["state"] == "WIN") {
+        count += 1;
+      } else {
+        count = 0;
+      }
+      if (count > maxCount) {
+        maxCount = count;
+      }
+    }
+    return count;
+  }
+}
+
+void endGame(BuildContext context) async {
+  endGameAnalytics[0]["value"] = "${totalPlayed()}";
+  endGameAnalytics[0]["value"] = "${winPercentage()}";
+  endGameAnalytics[0]["value"] = "${currentStreak()}";
+  endGameAnalytics[0]["value"] = "${longuestStreak()}";
   await showModalBottomSheet(
     context: context,
     builder: (BuildContext context) => Container(
