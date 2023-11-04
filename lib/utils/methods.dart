@@ -119,6 +119,19 @@ List<Widget> buidKeyboard(BuildContext context) {
                     if (currentGame!.keyboardMatrix_[indexI][indexJ]["key"] == "ENTER") {
                       if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_ == cellsSize) {
                         endGame(context);
+
+                        for (int letter = 0; letter < cellsSize; letter++) {
+                          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
+                            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
+                            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
+                          } else if (isDuplicate(letter, currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"]) && currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
+                            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(2);
+                            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(2);
+                          } else {
+                            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(1);
+                            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(1);
+                          }
+                        }
                         rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
                         await Future.delayed(50.ms);
                         rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = false);
@@ -126,7 +139,7 @@ List<Widget> buidKeyboard(BuildContext context) {
                         double wait = 0;
                         for (int column = 0; column < cellsSize; column++) {
                           await Future.delayed(wait.ms);
-                          cellsStates[currentGame!.lineIndex_ - 1][column].currentState!.setState(() {});
+                          cellsStates[currentGame!.lineIndex_][column].currentState!.setState(() {});
                           wait += 50;
                         }
                         keyboardKey.currentState!.setState(() {});
