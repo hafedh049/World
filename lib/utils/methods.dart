@@ -34,7 +34,7 @@ Color calculateColor(String type) {
 }
 
 Map<String, dynamic> findKey(String key) {
-  return <Map<String, dynamic>>[for (List<Map<String, dynamic>> list in keyboardMatrix) ...list].firstWhere((Map<String, dynamic> element) => element["key"] == key);
+  return <Map<String, dynamic>>[for (List<Map<String, dynamic>> list in currentGame!.keyboardMatrix_) ...list].firstWhere((Map<String, dynamic> element) => element["key"] == key);
 }
 
 List<Widget> buidGrid() {
@@ -48,7 +48,7 @@ List<Widget> buidGrid() {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                for (int indexJ = 0; indexJ < magicWord.length; indexJ++)
+                for (int indexJ = 0; indexJ < cellsSize; indexJ++)
                   Padding(
                     padding: const EdgeInsets.only(left: 12, bottom: 12),
                     child: StatefulBuilder(
@@ -56,13 +56,13 @@ List<Widget> buidGrid() {
                       builder: (BuildContext context, void Function(void Function()) _) {
                         return Tooltip(
                           waitDuration: 2.seconds,
-                          message: gameMatrix[indexI][indexJ]["type"],
+                          message: currentGame!.gameMatrix_[indexI][indexJ]["type"],
                           child: AnimatedRotation(
                             duration: 500.ms,
-                            turns: rowRotation ? 2 * pi : 0,
+                            turns: currentGame!.rowRotation_ ? 2 * pi : 0,
                             child: AnimatedScale(
                               duration: 100.ms,
-                              scale: lineIndex == indexI && columnIndex == indexJ && cellScale ? 1.1 : 1,
+                              scale: currentGame!.lineIndex_ == indexI && currentGame!.columnIndex_ == indexJ && currentGame!.cellScale_ ? 1.1 : 1,
                               child: InkWell(
                                 onTap: () => true,
                                 focusColor: transparent,
@@ -74,11 +74,11 @@ List<Widget> buidGrid() {
                                   width: 80,
                                   height: 80,
                                   decoration: BoxDecoration(
-                                    color: calculateColor(gameMatrix[indexI][indexJ]["type"]),
+                                    color: calculateColor(currentGame!.gameMatrix_[indexI][indexJ]["type"]),
                                     borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(width: .5, color: gameMatrix[indexI][indexJ]["key"] == "" ? white.withOpacity(.4) : white.withOpacity(.8)),
+                                    border: Border.all(width: .5, color: currentGame!.gameMatrix_[indexI][indexJ]["key"] == "" ? white.withOpacity(.4) : white.withOpacity(.8)),
                                   ),
-                                  child: Center(child: Text(gameMatrix[indexI][indexJ]["key"], style: const TextStyle(color: white, fontSize: 24, fontWeight: FontWeight.bold))),
+                                  child: Center(child: Text(currentGame!.gameMatrix_[indexI][indexJ]["key"], style: const TextStyle(color: white, fontSize: 24, fontWeight: FontWeight.bold))),
                                 ),
                               ),
                             ),
@@ -95,18 +95,18 @@ List<Widget> buidGrid() {
   return grid;
 }
 
-List<Widget> buidKeyboard(BuildContext context, void Function(void Function()) updater) {
+List<Widget> buidKeyboard(BuildContext context) {
   List<Widget> keyboard = <Widget>[];
-  for (int indexI = 0; indexI < keyboardMatrix.length; indexI++) {
+  for (int indexI = 0; indexI < 3; indexI++) {
     keyboard.add(
       Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          for (int indexJ = 0; indexJ < keyboardMatrix[indexI].length; indexJ++)
+          for (int indexJ = 0; indexJ < currentGame!.keyboardMatrix_[indexI].length; indexJ++)
             Tooltip(
               waitDuration: 2.seconds,
-              message: keyboardMatrix[indexI][indexJ]["type"],
+              message: currentGame!.keyboardMatrix_[indexI][indexJ]["type"],
               child: Padding(
                 padding: const EdgeInsets.only(left: 12, bottom: 12),
                 child: InkWell(
@@ -115,35 +115,27 @@ List<Widget> buidKeyboard(BuildContext context, void Function(void Function()) u
                   highlightColor: transparent,
                   splashColor: transparent,
                   onTap: () async {
-                    if (keyboardMatrix[indexI][indexJ]["key"] == "ENTER") {
-                      if (lineIndex == (6 - 1) && columnIndex == magicWord.length) {
+                    if (currentGame!.keyboardMatrix_[indexI][indexJ]["key"] == "ENTER") {
+                      if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_ == cellsSize) {
                         endGame(context);
-
-                        rowsStates[lineIndex].currentState!.setState(() => rowRotation = true);
+                        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
                         await Future.delayed(50.ms);
-                        rowsStates[lineIndex].currentState!.setState(() => rowRotation = false);
+                        rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = false);
 
                         double wait = 0;
-                        for (int column = 0; column < magicWord.length; column++) {
+                        for (int column = 0; column < cellsSize; column++) {
                           await Future.delayed(wait.ms);
-                          cellsStates[lineIndex - 1][column].currentState!.setState(() {});
+                          cellsStates[currentGame!.lineIndex_ - 1][column].currentState!.setState(() {});
                           wait += 50;
                         }
                         keyboardKey.currentState!.setState(() {});
 
-                        await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-                        lineIndex = 0;
-                        columnIndex = 0;
-                        gameMatrix = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(magicWord.length, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
-                        for (final List<Map<String, dynamic>> item in keyboardMatrix) {
-                          for (Map<String, dynamic> map in item) {
-                            map["type"] = keyState.lastOrNull;
-                          }
-                        }
-                        updater(() {});
-                      } else if (columnIndex == magicWord.length) {
-                        for (int letter = 0; letter < magicWord.length; letter++) {
-                          if (gameMatrix[lineIndex][letter]["key"] == magicWord[letter]) {
+                        //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
+                        currentGame!.lineIndex_ = 0;
+                        currentGame!.columnIndex_ = 0;
+                      } else if (currentGame!.columnIndex_ == cellsSize) {
+                        for (int letter = 0; letter < cellsSize; letter++) {
+                          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == magicWord[letter]) {
                             gameMatrix[lineIndex][letter]["type"] = keyState.elementAt(0);
                             findKey(gameMatrix[lineIndex][letter]["key"])["type"] = keyState.elementAt(0);
                           } else if (magicWord.contains(gameMatrix[lineIndex][letter]["key"])) {
@@ -382,6 +374,7 @@ Future<void> load() async {
   games = world!.get("games");
   if (games.isEmpty || games.last["state"] != "INCOMPLETE") {
     currentGame = Game();
+    currentGame!.magicWord_ = await getMagicWord();
   } else {
     currentGame = Game.fromJson(games.last);
   }

@@ -86,8 +86,17 @@ final List<String> allKeys = <String>[
     for (final Map<String, dynamic> entry in item) entry["key"]
 ];
 
+List<Map<String, String>> endGameAnalytics = <Map<String, String>>[
+  <String, String>{"value": "0", "text": "Played"},
+  <String, String>{"value": "0", "text": "Win %"},
+  <String, String>{"value": "0", "text": "Current\nStreak"},
+  <String, String>{"value": "0", "text": "Max Streak"},
+];
+
 class Game {
-  String magicWord_ = "HELLO";
+  String state_ = "INCOMPLETE";
+
+  Map<String, String> magicWord_ = <String, String>{};
 
   int lineIndex_ = 0;
   int columnIndex_ = 0;
@@ -99,17 +108,13 @@ class Game {
   bool cellScale_ = false;
   bool rowRotation_ = false;
 
-  List<Map<String, String>> endGameAnalytics_ = <Map<String, String>>[
-    <String, String>{"value": "0", "text": "Played"},
-    <String, String>{"value": "0", "text": "Win %"},
-    <String, String>{"value": "0", "text": "Current\nStreak"},
-    <String, String>{"value": "0", "text": "Max Streak"},
-  ];
+  List<Map<String, String>> endGameAnalytics_ = endGameAnalytics;
 
   Game();
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      "state": state_,
       "magicWord": magicWord_,
       "lineIndex": lineIndex_,
       "columnIndex": columnIndex_,
@@ -121,10 +126,11 @@ class Game {
 
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game()
-      ..magicWord_ = json["magicWord"] as String
+      ..state_ = json["state"] as String
+      ..magicWord_ = json["magicWord"] as Map<String, String>
       ..lineIndex_ = json["lineIndex"] as int
       ..columnIndex_ = json["columnIndex"] as int
-      ..gameMatrix_ = json["columnIndex"] as List<List<Map<String, dynamic>>>
-      ..keyboardMatrix_ = json["columnIndex"] as List<List<Map<String, dynamic>>>;
+      ..gameMatrix_ = json["gameMatrix"] as List<List<Map<String, dynamic>>>
+      ..keyboardMatrix_ = json["keyboardMatrix"] as List<List<Map<String, dynamic>>>;
   }
 }
