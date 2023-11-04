@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:world/game_model.dart';
 import 'package:world/utils/shared.dart';
 
 // open box = create collection
@@ -294,7 +295,6 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
 }
 
 bool isDuplicate(int index, String key) {
-  print(currentGame!.magicWord_);
   List<String> keys = currentGame!.gameMatrix_[currentGame!.lineIndex_].map((Map<String, dynamic> e) => (e["key"] as String)).toList();
   return !(index > keys.indexOf(key));
 }
