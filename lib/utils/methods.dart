@@ -209,6 +209,18 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
       if (currentGame!.lineIndex_ == (6 - 1) && currentGame!.columnIndex_ == cellsSize) {
         endGame(context);
 
+        for (int letter = 0; letter < cellsSize; letter++) {
+          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
+            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
+            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
+          } else if (isDuplicate(letter, currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"]) && currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
+            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(2);
+            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(2);
+          } else {
+            currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(1);
+            findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(1);
+          }
+        }
         rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = true);
         await Future.delayed(50.ms);
         rowsStates[currentGame!.lineIndex_].currentState!.setState(() => currentGame!.rowRotation_ = false);
@@ -224,10 +236,10 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
       } else if (currentGame!.columnIndex_ == cellsSize) {
         for (int letter = 0; letter < cellsSize; letter++) {
-          if (isDuplicate(letter, currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"]) && currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
+          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
             findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
-          } else if (currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
+          } else if (isDuplicate(letter, currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"]) && currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(2);
             findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(2);
           } else {
@@ -282,6 +294,7 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
 }
 
 bool isDuplicate(int index, String key) {
+  print(currentGame!.magicWord_);
   List<String> keys = currentGame!.gameMatrix_[currentGame!.lineIndex_].map((Map<String, dynamic> e) => (e["key"] as String)).toList();
   return !(index > keys.indexOf(key));
 }
@@ -358,15 +371,17 @@ void endGame(BuildContext context) async {
 }
 
 Future<Map<String, dynamic>> getMagicWord() async {
-  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<dynamic>)[4287];
+  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<dynamic>)[Random().nextInt(4287)];
 }
 
 Future<void> load() async {
   world = await openHiveBox();
   games = world!.get("games") as List<Map<String, dynamic>>?;
   if (games == null || games!.isEmpty || games!.last["state"] != "INCOMPLETE") {
+    print("yeaaaaaaaaah");
     currentGame = Game();
     currentGame!.magicWord_ = await getMagicWord();
+    print(currentGame!.magicWord_);
   } else {
     currentGame = Game.fromJson(games!.last);
   }
