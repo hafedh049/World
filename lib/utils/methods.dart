@@ -336,7 +336,7 @@ void endGame(BuildContext context) async {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              for (final Map<String, String> entry in currentGame!.endGameAnalytics_)
+              for (final Map<String, String> entry in endGameAnalytics)
                 Container(
                   padding: const EdgeInsets.only(right: 24),
                   child: Column(
@@ -378,7 +378,6 @@ Future<void> load() async {
   world = await openHiveBox();
   games = world!.get("games") as List<Map<String, dynamic>>?;
   if (games == null || games!.isEmpty || games!.last["state"] != "INCOMPLETE") {
-    print("yeaaaaaaaaah");
     currentGame = Game();
     currentGame!.magicWord_ = await getMagicWord();
     print(currentGame!.magicWord_);

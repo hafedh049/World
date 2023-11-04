@@ -50,13 +50,6 @@ class Game {
   bool cellScale_ = false;
   bool rowRotation_ = false;
 
-  List<Map<String, String>> endGameAnalytics_ = <Map<String, String>>[
-    <String, String>{"value": "0", "text": "Played"},
-    <String, String>{"value": "0", "text": "Win %"},
-    <String, String>{"value": "0", "text": "Current\nStreak"},
-    <String, String>{"value": "0", "text": "Max Streak"},
-  ];
-
   Game();
 
   Map<String, dynamic> toJson() {
@@ -67,7 +60,6 @@ class Game {
       "columnIndex": columnIndex_,
       "gameMatrix": gameMatrix_,
       "keyboardMatrix": keyboardMatrix_,
-      "endGameAnalytics": endGameAnalytics_,
     };
   }
 
