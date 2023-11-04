@@ -8,9 +8,9 @@ class Game {
   int lineIndex_ = 0;
   int columnIndex_ = 0;
 
-  List gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
+  List<List<Map<String, dynamic>>> gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
 
-  List keyboardMatrix_ = <List<Map<String, dynamic>>>[
+  List<List<Map<String, dynamic>>> keyboardMatrix_ = <List<Map<String, dynamic>>>[
     <Map<String, dynamic>>[
       <String, dynamic>{"key": 'Q', "type": keyState.lastOrNull},
       <String, dynamic>{"key": 'W', "type": keyState.lastOrNull},
@@ -64,14 +64,24 @@ class Game {
   }
 
   factory Game.fromJson(Map<String, dynamic> json) {
-    var g = Game()
+    Game game = Game()
       ..state_ = json["state"] as String
       ..magicWord_ = json["magicWord"].cast<String, dynamic>()
       ..lineIndex_ = json["lineIndex"] as int
-      ..columnIndex_ = json["columnIndex"] as int
-      ..gameMatrix_ = json["gameMatrix"]
-      ..keyboardMatrix_ = json["keyboardMatrix"];
-
-    return g;
+      ..columnIndex_ = json["columnIndex"] as int;
+    for (int indexI = 0; indexI < game.gameMatrix_.length; indexI++) {
+      for (int indexJ = 0; indexJ < game.gameMatrix_[indexI].length; indexJ++) {
+        game.gameMatrix_[indexI][indexJ]["key"] = json["gameMatrix"][indexI][indexJ]["key"];
+        game.gameMatrix_[indexI][indexJ]["type"] = json["gameMatrix"][indexI][indexJ]["type"];
+      }
+    }
+    print(game.gameMatrix_);
+    for (int indexI = 0; indexI < game.keyboardMatrix_.length; indexI++) {
+      for (int indexJ = 0; indexJ < game.keyboardMatrix_[indexI].length; indexJ++) {
+        game.keyboardMatrix_[indexI][indexJ]["type"] = json["gameMatrix"][indexI][indexJ]["type"];
+      }
+    }
+    print(game.keyboardMatrix_);
+    return game;
   }
 }
