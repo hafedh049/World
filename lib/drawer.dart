@@ -11,7 +11,6 @@ class DDrawer extends StatefulWidget {
 
 class _DDrawerState extends State<DDrawer> {
   bool _cocktailShaker = false;
-  bool _me = false;
   final Widget _logo = Image.asset("assets/w.png", width: 150, height: 150);
   @override
   Widget build(BuildContext context) {
