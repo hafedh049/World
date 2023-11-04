@@ -87,43 +87,44 @@ final List<String> allKeys = <String>[
 ];
 
 class Game {
-  String magicWord = "HELLO";
+  String magicWord_ = "HELLO";
 
-  int lineIndex = 0;
-  int columnIndex = 0;
+  int lineIndex_ = 0;
+  int columnIndex_ = 0;
 
-  final List<List<Map<String, dynamic>>> _gameMatrix = gameMatrix;
+  List<List<Map<String, dynamic>>> gameMatrix_ = gameMatrix;
 
-  final List<List<Map<String, dynamic>>> _keyboardMatrix = keyboardMatrix;
+  List<List<Map<String, dynamic>>> keyboardMatrix_ = keyboardMatrix;
 
-  bool cellScale = false;
-  bool rowRotation = false;
+  bool cellScale_ = false;
+  bool rowRotation_ = false;
 
-  final List<Map<String, String>> endGameAnalytics = <Map<String, String>>[
-    <String, String>{"value": "2", "text": "Played"},
+  List<Map<String, String>> endGameAnalytics_ = <Map<String, String>>[
+    <String, String>{"value": "0", "text": "Played"},
     <String, String>{"value": "0", "text": "Win %"},
     <String, String>{"value": "0", "text": "Current\nStreak"},
     <String, String>{"value": "0", "text": "Max Streak"},
   ];
 
-  Game() {}
+  Game();
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      "magicWord": magicWord,
-      "lineIndex": lineIndex,
-      "columnIndex": columnIndex,
-      "_gameMatrix": _gameMatrix,
-      "_keyboardMatrix": _keyboardMatrix,
-      "endGameAnalytics": endGameAnalytics,
+      "magicWord": magicWord_,
+      "lineIndex": lineIndex_,
+      "columnIndex": columnIndex_,
+      "gameMatrix": gameMatrix_,
+      "keyboardMatrix": keyboardMatrix_,
+      "endGameAnalytics": endGameAnalytics_,
     };
   }
 
-  // Create a Game object from a JSON Map
   factory Game.fromJson(Map<String, dynamic> json) {
     return Game()
-      ..magicWord = json["magicWord"] as String
-      ..lineIndex = json["lineIndex"] as int
-      ..columnIndex = json["columnIndex"] as int;
+      ..magicWord_ = json["magicWord"] as String
+      ..lineIndex_ = json["lineIndex"] as int
+      ..columnIndex_ = json["columnIndex"] as int
+      ..gameMatrix_ = json["columnIndex"] as List<List<Map<String, dynamic>>>
+      ..keyboardMatrix_ = json["columnIndex"] as List<List<Map<String, dynamic>>>;
   }
 }

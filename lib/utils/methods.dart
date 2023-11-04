@@ -1,5 +1,6 @@
 // ignore_for_file: invalid_use_of_protected_member, use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -372,8 +373,8 @@ void endGame(BuildContext context) async {
   );
 }
 
-String getMagicWord(int size){
-  return 
+Future<Map<String, String>> getMagicWord() async {
+  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<Map<String, String>>)[Random().nextInt(15000)];
 }
 
 Future<void> load() async {
@@ -381,7 +382,7 @@ Future<void> load() async {
   games = world!.get("games");
   if (games.isEmpty || games.last["state"] != "INCOMPLETE") {
     currentGame = Game();
-  }else{
+  } else {
     currentGame = Game.fromJson(games.last);
   }
 }
