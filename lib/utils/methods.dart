@@ -216,7 +216,7 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         double wait = 0;
         for (int column = 0; column < cellsSize; column++) {
           await Future.delayed(wait.ms);
-          cellsStates[currentGame!.lineIndex_ - 1][column].currentState!.setState(() {});
+          cellsStates[currentGame!.lineIndex_][column].currentState!.setState(() {});
           wait += 50;
         }
         keyboardKey.currentState!.setState(() {});
@@ -224,7 +224,7 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         //await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("currentGame!.gameMatrix_, currentGame!.gameMatrix_]);
       } else if (currentGame!.columnIndex_ == cellsSize) {
         for (int letter = 0; letter < cellsSize; letter++) {
-          if (currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
+          if (isDuplicate(letter, currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"]) && currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"] == currentGame!.magicWord_["word"]![letter]) {
             currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["type"] = keyState.elementAt(0);
             findKey(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])["type"] = keyState.elementAt(0);
           } else if (currentGame!.magicWord_["word"]!.contains(currentGame!.gameMatrix_[currentGame!.lineIndex_][letter]["key"])) {
@@ -279,6 +279,11 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
       }
     }
   }
+}
+
+bool isDuplicate(int index, String key) {
+  List<String> keys = currentGame!.gameMatrix_[currentGame!.lineIndex_].map((Map<String, dynamic> e) => (e["key"] as String)).toList();
+  return !(index > keys.indexOf(key));
 }
 
 bool checkEndGame() {
@@ -353,7 +358,7 @@ void endGame(BuildContext context) async {
 }
 
 Future<Map<String, dynamic>> getMagicWord() async {
-  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<dynamic>)[Random().nextInt(15000)];
+  return (json.decode((await rootBundle.loadString("assets/words_$cellsSize.json"))) as List<dynamic>)[4287];
 }
 
 Future<void> load() async {
