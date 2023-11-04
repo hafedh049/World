@@ -83,7 +83,7 @@ final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
   <String, dynamic>{"state": false, "item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft},
   <String, dynamic>{"state": false, "item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator},
   <String, dynamic>{"state": false, "item": "About Me", "onTap": () {}, "icon": FontAwesomeIcons.medal},
-  <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.git},
+  <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes},
 ];
 
 //add animation effects to the cells
