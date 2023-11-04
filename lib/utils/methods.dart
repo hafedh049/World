@@ -194,3 +194,7 @@ List<Widget> buidKeyboard() {
   }
   return keyboard;
 }
+
+void endGame(BuildContext context) async {
+  await showModalBottomSheet(context: context, builder: (BuildContext context) => Container());
+}

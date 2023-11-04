@@ -32,13 +32,15 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
         if (event is RawKeyDownEvent) {
           if (event.isKeyPressed(LogicalKeyboardKey.enter) || event.isKeyPressed(LogicalKeyboardKey.numpadEnter)) {
             if (lineIndex == (6 - 1) && columnIndex == magicWord.length) {
-              // END OF GAME
-              await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
-              lineIndex = 0;
-              columnIndex = 0;
+              endGame(context);
+
               rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = true);
               await Future.delayed(50.ms);
               rowsStates[lineIndex - 1].currentState!.setState(() => rowRotation = false);
+
+              await Future.wait(<Future<void>>[addKVHive("new", true), addKVHive("gameMatrix", gameMatrix)]);
+              lineIndex = 0;
+              columnIndex = 0;
 
               double wait = 0;
               for (int column = 0; column < magicWord.length; column++) {
