@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world/utils/shared.dart';
 
 class DDrawer extends StatefulWidget {
@@ -19,23 +20,30 @@ class _DDrawerState extends State<DDrawer> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Center(child: Image.asset("assets/world.png")),
+              const SizedBox(height: 30),
               for (final Map<String, dynamic> entry in menu)
                 Padding(
                   padding: const EdgeInsets.only(left: 16, bottom: 16),
-                  child: InkWell(
-                    onTap: () => true,
-                    splashColor: transparent,
-                    hoverColor: transparent,
-                    highlightColor: transparent,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Icon(entry["icon"], size: 15), const SizedBox(width: 10), Text(entry["item"], style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))]),
-                        const SizedBox(height: 5),
-                        Container(height: .9, width: entry["item"].length * 12.0, color: white),
-                      ],
-                    ),
+                  child: StatefulBuilder(
+                    builder: (BuildContext context, void Function(void Function()) _) {
+                      return InkWell(
+                        onTap: () => true,
+                        onHover: (bool value) => _(() => entry["state"] = value),
+                        splashColor: transparent,
+                        hoverColor: transparent,
+                        highlightColor: transparent,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(mainAxisSize: MainAxisSize.min, children: <Widget>[Icon(entry["icon"], size: 15, color: entry["state"] ? blue : null), const SizedBox(width: 10), Text(entry["item"], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: entry["state"] ? blue : null))]),
+                            const SizedBox(height: 5),
+                            AnimatedContainer(duration: 700.ms, height: .9, width: entry["state"] ? entry["item"].length * 12.0 + 5 : 0, color: white),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ),
             ],

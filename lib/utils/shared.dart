@@ -10,7 +10,7 @@ final List<String> supportedLanguages = <String>["en", "fr", "ar"];
 const String gameTitle = "WORLD";
 final List<List<dynamic>> gameLetters = gameTitle.split(r"").map((String e) => <dynamic>[e, white]).toList();
 Box? world;
-const Color blue = Color.fromARGB(255, 4, 95, 113);
+const Color blue = Color.fromARGB(255, 0, 146, 175);
 const Color white = Color.fromARGB(255, 229, 229, 229);
 const Color transparent = Colors.transparent;
 const Color green = Colors.green;
@@ -79,9 +79,9 @@ bool rowRotation = false;
 String selectedItem = "Home";
 
 final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
-  <String, dynamic>{"item": "Home", "onTap": () {}, "icon": FontAwesomeIcons.gamepad},
-  <String, dynamic>{"item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft},
-  <String, dynamic>{"item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator},
+  <String, dynamic>{"state": false, "item": "Home", "onTap": () {}, "icon": FontAwesomeIcons.gamepad},
+  <String, dynamic>{"state": false, "item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft},
+  <String, dynamic>{"state": false, "item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator},
 ];
 
 //add animation effects to the cells
