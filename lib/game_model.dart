@@ -69,19 +69,19 @@ class Game {
       ..magicWord_ = json["magicWord"].cast<String, dynamic>()
       ..lineIndex_ = json["lineIndex"] as int
       ..columnIndex_ = json["columnIndex"] as int;
+
     for (int indexI = 0; indexI < game.gameMatrix_.length; indexI++) {
       for (int indexJ = 0; indexJ < game.gameMatrix_[indexI].length; indexJ++) {
         game.gameMatrix_[indexI][indexJ]["key"] = json["gameMatrix"][indexI][indexJ]["key"];
         game.gameMatrix_[indexI][indexJ]["type"] = json["gameMatrix"][indexI][indexJ]["type"];
       }
     }
-    print(game.gameMatrix_);
+
     for (int indexI = 0; indexI < game.keyboardMatrix_.length; indexI++) {
       for (int indexJ = 0; indexJ < game.keyboardMatrix_[indexI].length; indexJ++) {
-        game.keyboardMatrix_[indexI][indexJ]["type"] = json["gameMatrix"][indexI][indexJ]["type"];
+        game.keyboardMatrix_[indexI][indexJ]["type"] = json["keyboardMatrix"][indexI][indexJ]["type"];
       }
     }
-    print(game.keyboardMatrix_);
     return game;
   }
 }

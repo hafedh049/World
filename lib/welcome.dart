@@ -20,7 +20,7 @@ class _WelcomeState extends State<Welcome> with TickerProviderStateMixin {
   @override
   void initState() {
     _timer = Timer.periodic(
-      1.seconds,
+      700.ms,
       (Timer timer) {
         if (_iter < gameLetters.length) {
           _wordsKey.currentState!.setState(() => gameLetters[_iter++][1] = blue);
