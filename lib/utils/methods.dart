@@ -318,7 +318,7 @@ void endGame(BuildContext context) async {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              for (final Map<String, String> entry in endGameAnalytics)
+              for (final Map<String, String> entry in currentGame!.endGameAnalytics_)
                 Container(
                   padding: const EdgeInsets.only(right: 24),
                   child: Column(

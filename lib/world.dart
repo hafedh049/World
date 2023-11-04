@@ -73,7 +73,7 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
               StatefulBuilder(
                 key: keyboardKey,
                 builder: (BuildContext context, void Function(void Function()) _) {
-                  return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Column(mainAxisSize: MainAxisSize.min, children: buidKeyboard(context, setState)));
+                  return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Column(mainAxisSize: MainAxisSize.min, children: buidKeyboard(context)));
                 },
               ),
             ],
