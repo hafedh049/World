@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -451,8 +452,26 @@ Future<void> update() async {
             : "INCOMPLETE";
     games!.add(currentGame!.toJson());
   }
+  if (currentGame!.state_ == "WIN") {
+    showSnack(saveStateKey.currentState!.context, "SUCESS", "You have found the magic word.", ContentType.success);
+  } else if (currentGame!.state_ == "LOSS") {
+    showSnack(saveStateKey.currentState!.context, "LOSS", "You haven't found the magic word.", ContentType.failure);
+  }
   world!.put("games", games!);
   saveStateKey.currentState!.setState(() => save = true);
   await Future.delayed(1000.ms);
   saveStateKey.currentState!.setState(() => save = false);
+}
+
+void showSnack(BuildContext context, String title, String message, ContentType type) {
+  final snackBar = SnackBar(
+    elevation: 0,
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: Colors.transparent,
+    content: AwesomeSnackbarContent(title: title, message: message, contentType: type),
+  );
+
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(snackBar);
 }

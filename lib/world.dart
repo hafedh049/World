@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:world/drawer.dart';
@@ -40,6 +41,9 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
                 return FutureBuilder<void>(
                     future: load(),
                     builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      if (snapshot.hasData && games!.isNotEmpty) {
+                        showSnack(context, "NOTE", "See your previous games", ContentType.help);
+                      }
                       return snapshot.hasError
                           ? EError(error: snapshot.error.toString())
                           : snapshot.connectionState == ConnectionState.waiting
