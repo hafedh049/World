@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import 'package:world/utils/shared.dart';
 
 class DDrawer extends StatefulWidget {
@@ -40,7 +42,7 @@ class _DDrawerState extends State<DDrawer> {
               const SizedBox(height: 30),
               for (final Map<String, dynamic> entry in menu)
                 Padding(
-                  padding: const EdgeInsets.only(left: 16, bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
                       return InkWell(
@@ -58,7 +60,7 @@ class _DDrawerState extends State<DDrawer> {
                               children: <Widget>[
                                 Icon(entry["icon"], size: 15, color: entry["state"] ? blue : null),
                                 const SizedBox(width: 10),
-                                Text(entry["item"], style: TextStyle(fontSize: 18, color: entry["state"] ? blue : null)),
+                                Text(entry["item"], style: TextStyle(fontSize: 16, color: entry["state"] ? blue : null)),
                               ],
                             ),
                             const SizedBox(height: 5),
@@ -70,25 +72,78 @@ class _DDrawerState extends State<DDrawer> {
                   ),
                 ),
               const SizedBox(height: 10),
-              ExpansionTile(
-                title: const Text('Word Size'),
+              Row(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      for (int index = 5; index <= 7; index++)
-                        AnimatedButton(
-                          text: index.toString(),
-                          onPress: () {
-                            if (cellsSize != index) {
-                              cellsSize = index;
-                            }
-                          },
-                        ),
+                  const Icon(FontAwesomeIcons.w, size: 15),
+                  const SizedBox(width: 10),
+                  const Text("Word Size", style: TextStyle(fontSize: 16)),
+                  const Spacer(),
+                  ToggleSwitch(
+                    minHeight: 30,
+                    customWidths: const <double>[50, 50, 50],
+                    cornerRadius: 10,
+                    animate: true,
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: Colors.grey,
+                    inactiveFgColor: Colors.white,
+                    totalSwitches: 3,
+                    icons: const <IconData>[FontAwesomeIcons.five, FontAwesomeIcons.six, FontAwesomeIcons.seven],
+                    iconSize: 15,
+                    borderWidth: 0,
+                    borderColor: const <Color>[white],
+                    activeBgColors: const <List<Color>>[
+                      <Color>[Colors.blue],
+                      <Color>[Colors.pink],
+                      <Color>[Colors.purple]
                     ],
+                    onToggle: (int? index) {},
                   ),
                 ],
-              )
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: <Widget>[
+                  const Icon(FontAwesomeIcons.themeco, size: 15),
+                  const SizedBox(width: 10),
+                  const Text("Themes", style: TextStyle(fontSize: 16)),
+                  const Spacer(),
+                  ToggleSwitch(
+                    customWidths: const <double>[90, 50],
+                    cornerRadius: 15.0,
+                    activeBgColors: <List<Color>>[
+                      const <Color>[blue],
+                      <Color>[yellow]
+                    ],
+                    animate: true,
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: Colors.grey,
+                    inactiveFgColor: Colors.white,
+                    totalSwitches: 2,
+                    labels: const <String>['DARK', ''],
+                    icons: const <IconData>[FontAwesomeIcons.moon, FontAwesomeIcons.sun],
+                    onToggle: (int? index) {},
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Row(children: <Widget>[Icon(FontAwesomeIcons.language, size: 15), SizedBox(width: 10), Text("Supported Languages", style: TextStyle(fontSize: 16))]),
+              const SizedBox(height: 10),
+              ToggleSwitch(
+                labels: supportedLanguages,
+                animate: true,
+                minHeight: 40,
+                initialLabelIndex: 0,
+                cornerRadius: 15,
+                activeFgColor: white,
+                inactiveBgColor: dark.withOpacity(.3),
+                inactiveFgColor: white,
+                totalSwitches: 3,
+                icons: const <IconData>[FontAwesomeIcons.earthAfrica, FontAwesomeIcons.earthAfrica, FontAwesomeIcons.earthAfrica],
+                iconSize: 15,
+                borderColor: const <Color>[Color(0xff3b5998), Color(0xff8b9dc3), Color(0xff00aeff), Color(0xff0077f2), Color(0xff962fbf), Color(0xff4f5bd5)],
+                dividerColor: blue,
+                onToggle: (int? index) {},
+              ),
             ],
           ),
         ),

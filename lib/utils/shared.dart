@@ -7,7 +7,7 @@ import 'package:world/game_model.dart';
 
 String theme = "dark";
 String language = "en";
-final List<String> supportedLanguages = <String>["en", "fr", "ar"];
+final List<String> supportedLanguages = <String>["EN", "FR", "AR"];
 const String gameTitle = "WORLD";
 final List<List<dynamic>> gameLetters = gameTitle.split(r"").map((String e) => <dynamic>[e, white]).toList();
 
