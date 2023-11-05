@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:world/utils/shared.dart';
 
 class DDrawer extends StatefulWidget {
@@ -68,6 +69,26 @@ class _DDrawerState extends State<DDrawer> {
                     },
                   ),
                 ),
+              const SizedBox(height: 10),
+              ExpansionTile(
+                title: const Text('Word Size'),
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      for (int index = 5; index <= 7; index++)
+                        AnimatedButton(
+                          text: index.toString(),
+                          onPress: () {
+                            if (cellsSize != index) {
+                              cellsSize = index;
+                            }
+                          },
+                        ),
+                    ],
+                  ),
+                ],
+              )
             ],
           ),
         ),

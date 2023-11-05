@@ -180,7 +180,6 @@ List<Widget> buidKeyboard(BuildContext context) {
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
                         await Future.delayed(50.ms);
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
-                        update();
                       }
                     } else {
                       if (currentGame!.columnIndex_ < cellsSize) {
@@ -189,7 +188,6 @@ List<Widget> buidKeyboard(BuildContext context) {
                         await Future.delayed(50.ms);
                         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
                         currentGame!.columnIndex_ += 1;
-                        update();
                       }
                     }
                   },
@@ -282,7 +280,6 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = true);
         await Future.delayed(50.ms);
         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
-        update();
       }
     } else if (event.character != null && allKeys.contains(event.character!.toUpperCase())) {
       if (currentGame!.columnIndex_ < cellsSize) {
@@ -291,34 +288,9 @@ void rawKeyboard(RawKeyEvent event, BuildContext context) async {
         await Future.delayed(50.ms);
         cellsStates[currentGame!.lineIndex_][currentGame!.columnIndex_].currentState!.setState(() => currentGame!.cellScale_ = false);
         currentGame!.columnIndex_ += 1;
-        update();
       }
     }
   }
-}
-
-Future<void> update() async {
-  if (games == null || games!.isEmpty) {
-    games = <Map<String, dynamic>>[currentGame!.toJson()];
-  } else if (games!.last["state"] == "INCOMPLETE") {
-    currentGame!.state_ = checkEndGame()
-        ? "WIN"
-        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize - 1
-            ? "LOSS"
-            : "INCOMPLETE";
-    games!.last = currentGame!.toJson();
-  } else {
-    currentGame!.state_ = checkEndGame()
-        ? "WIN"
-        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize - 1
-            ? "LOSS"
-            : "INCOMPLETE";
-    games!.add(currentGame!.toJson());
-  }
-  world!.put("games", games!);
-  saveStateKey.currentState!.setState(() => save = true);
-  await Future.delayed(1000.ms);
-  saveStateKey.currentState!.setState(() => save = false);
 }
 
 bool isDuplicate(int index, String key) {
@@ -459,5 +431,28 @@ Future<void> load() async {
   } else {
     currentGame = Game.fromJson(games!.last.cast<String, dynamic>());
   }
-  if (games != null) for (var game in games!) print(game);
+}
+
+Future<void> update() async {
+  if (games == null || games!.isEmpty) {
+    games = <Map<String, dynamic>>[currentGame!.toJson()];
+  } else if (games!.last["state"] == "INCOMPLETE") {
+    currentGame!.state_ = checkEndGame()
+        ? "WIN"
+        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize
+            ? "LOSS"
+            : "INCOMPLETE";
+    games!.last = currentGame!.toJson();
+  } else {
+    currentGame!.state_ = checkEndGame()
+        ? "WIN"
+        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize
+            ? "LOSS"
+            : "INCOMPLETE";
+    games!.add(currentGame!.toJson());
+  }
+  world!.put("games", games!);
+  saveStateKey.currentState!.setState(() => save = true);
+  await Future.delayed(1000.ms);
+  saveStateKey.currentState!.setState(() => save = false);
 }
