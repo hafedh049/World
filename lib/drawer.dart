@@ -45,7 +45,7 @@ class _DDrawerState extends State<DDrawer> {
                   child: StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
                       return InkWell(
-                        onTap: () => true,
+                        onTap: () {},
                         onHover: (bool value) => _(() => entry["state"] = value),
                         splashColor: transparent,
                         hoverColor: transparent,
