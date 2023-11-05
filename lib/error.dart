@@ -9,10 +9,11 @@ class EError extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Flexible(child: Image.asset("assets/error.png")),
+          Image.asset("assets/error.png", width: MediaQuery.sizeOf(context).width * .5, height: MediaQuery.sizeOf(context).width * .5),
           const SizedBox(height: 20),
-          Flexible(child: Text(error)),
+          Text(error),
         ],
       ),
     );

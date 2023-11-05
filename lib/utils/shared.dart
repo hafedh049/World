@@ -53,6 +53,6 @@ List<Map<String, String>> endGameAnalytics = <Map<String, String>>[
   <String, String>{"value": "0", "text": "Played"},
   <String, String>{"value": "0", "text": "Win %"},
   <String, String>{"value": "0", "text": "Current\nStreak"},
-  <String, String>{"value": "0", "text": "Max Streak"},
+  <String, String>{"value": "0", "text": "Max\nStreak"},
 ];
 //add animation effects to the cells

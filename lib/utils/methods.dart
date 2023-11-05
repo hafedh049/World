@@ -303,19 +303,18 @@ Future<void> update() async {
   } else if (games!.last["state"] == "INCOMPLETE") {
     currentGame!.state_ = checkEndGame()
         ? "WIN"
-        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize
+        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize - 1
             ? "LOSS"
             : "INCOMPLETE";
     games!.last = currentGame!.toJson();
   } else {
     currentGame!.state_ = checkEndGame()
         ? "WIN"
-        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize
+        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize - 1
             ? "LOSS"
             : "INCOMPLETE";
     games!.add(currentGame!.toJson());
   }
-  print(games);
   world!.put("games", games!);
   saveStateKey.currentState!.setState(() => save = true);
   await Future.delayed(1000.ms);
@@ -393,9 +392,10 @@ int longuestStreak() {
 
 void endGame(BuildContext context) async {
   endGameAnalytics[0]["value"] = "${totalPlayed()}";
-  endGameAnalytics[0]["value"] = "${winPercentage()}";
-  endGameAnalytics[0]["value"] = "${currentStreak()}";
-  endGameAnalytics[0]["value"] = "${longuestStreak()}";
+  endGameAnalytics[1]["value"] = "${winPercentage()}";
+  endGameAnalytics[2]["value"] = "${currentStreak()}";
+  endGameAnalytics[3]["value"] = "${longuestStreak()}";
+
   await showModalBottomSheet(
     context: context,
     builder: (BuildContext context) => Container(
@@ -418,7 +418,7 @@ void endGame(BuildContext context) async {
                     children: <Widget>[
                       Text(entry["value"]!, style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 35)),
                       const SizedBox(height: 5),
-                      Text(entry["text"]!, style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
+                      Text(entry["text"]!, textAlign: TextAlign.center, style: const TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 14)),
                     ],
                   ),
                 ),
@@ -442,11 +442,7 @@ void endGame(BuildContext context) async {
         ],
       ),
     ),
-  ).then((void value) async {
-    games!.add(Game());
-    await world!.put("games", games!);
-    gameKey.currentState!.setState(() {});
-  });
+  ).then((void value) async => gameKey.currentState!.setState(() {}));
 }
 
 Future<Map<String, dynamic>> getMagicWord() async {
@@ -463,4 +459,5 @@ Future<void> load() async {
   } else {
     currentGame = Game.fromJson(games!.last.cast<String, dynamic>());
   }
+  if (games != null) for (var game in games!) print(game);
 }
