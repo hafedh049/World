@@ -5,17 +5,15 @@ class EError extends StatelessWidget {
   final String error;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Flexible(child: Image.asset("assets/error.png")),
-            const SizedBox(height: 20),
-            Flexible(child: Text(error)),
-          ],
-        ),
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Flexible(child: Image.asset("assets/error.png")),
+          const SizedBox(height: 20),
+          Flexible(child: Text(error)),
+        ],
       ),
     );
   }

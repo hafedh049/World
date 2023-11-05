@@ -301,10 +301,21 @@ Future<void> update() async {
   if (games == null || games!.isEmpty) {
     games = <Map<String, dynamic>>[currentGame!.toJson()];
   } else if (games!.last["state"] == "INCOMPLETE") {
+    currentGame!.state_ = checkEndGame()
+        ? "WIN"
+        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize
+            ? "LOSS"
+            : "INCOMPLETE";
     games!.last = currentGame!.toJson();
   } else {
-    games!.add((currentGame!..state_ = checkEndGame() ? "WIN" : "LOSS").toJson());
+    currentGame!.state_ = checkEndGame()
+        ? "WIN"
+        : currentGame!.lineIndex_ == 5 && currentGame!.columnIndex_ == cellsSize
+            ? "LOSS"
+            : "INCOMPLETE";
+    games!.add(currentGame!.toJson());
   }
+  print(games);
   world!.put("games", games!);
   saveStateKey.currentState!.setState(() => save = true);
   await Future.delayed(1000.ms);
@@ -431,7 +442,11 @@ void endGame(BuildContext context) async {
         ],
       ),
     ),
-  );
+  ).then((void value) async {
+    games!.add(Game());
+    await world!.put("games", games!);
+    gameKey.currentState!.setState(() {});
+  });
 }
 
 Future<Map<String, dynamic>> getMagicWord() async {

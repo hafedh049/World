@@ -40,6 +40,7 @@ final List<List<GlobalKey<State>>> cellsStates = List<List<GlobalKey<State>>>.ge
 final List<GlobalKey<State>> rowsStates = List<GlobalKey<State>>.generate(6, (int _) => GlobalKey<State>());
 final GlobalKey<State> keyboardKey = GlobalKey<State>();
 final GlobalKey<State> saveStateKey = GlobalKey<State>();
+final GlobalKey<State> gameKey = GlobalKey<State>();
 
 bool save = false;
 
