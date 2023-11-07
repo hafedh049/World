@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
+import 'package:world/about_me.dart';
 import 'package:world/game_model.dart';
 import 'package:world/history.dart';
 
@@ -29,8 +30,8 @@ String selectedItem = "Home";
 final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
   <String, dynamic>{"state": false, "item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft, "screen": const History()},
   <String, dynamic>{"state": false, "item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator, "screen": const History()},
-  <String, dynamic>{"state": false, "item": "About Me", "onTap": () {}, "icon": FontAwesomeIcons.medal, "screen": const History()},
-  <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes, "screen": const History()},
+  <String, dynamic>{"state": false, "item": "About Me", "onTap": () {}, "icon": FontAwesomeIcons.medal, "screen": const AboutMe()},
+  <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes, "screen": null},
 ];
 
 Box<List<dynamic>>? world;

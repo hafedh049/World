@@ -45,7 +45,7 @@ class _DDrawerState extends State<DDrawer> {
                   child: StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
                       return InkWell(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => entry["screen"])),
+                        onTap: () => entry["screen"] == null ? null : Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => entry["screen"])),
                         onHover: (bool value) => _(() => entry["state"] = value),
                         splashColor: transparent,
                         hoverColor: transparent,
