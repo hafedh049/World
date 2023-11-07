@@ -41,6 +41,7 @@ final List<GlobalKey<State>> rowsStates = List<GlobalKey<State>>.generate(6, (in
 final GlobalKey<State> keyboardKey = GlobalKey<State>();
 final GlobalKey<State> saveStateKey = GlobalKey<State>();
 final GlobalKey<State> gameKey = GlobalKey<State>();
+final GlobalKey<ScaffoldState> drawerKey = GlobalKey<ScaffoldState>();
 
 bool save = false;
 

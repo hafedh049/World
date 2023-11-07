@@ -78,42 +78,6 @@ class _DDrawerState extends State<DDrawer> {
               const SizedBox(height: 10),
               Row(
                 children: <Widget>[
-                  const Icon(FontAwesomeIcons.w, size: 15),
-                  const SizedBox(width: 10),
-                  const Text("Word Size", style: TextStyle(fontSize: 16)),
-                  const Spacer(),
-                  ToggleSwitch(
-                    minHeight: 30,
-                    customWidths: const <double>[50, 50, 50],
-                    cornerRadius: 10,
-                    animate: true,
-                    activeFgColor: Colors.white,
-                    inactiveBgColor: Colors.grey,
-                    inactiveFgColor: Colors.white,
-                    totalSwitches: 3,
-                    icons: const <IconData>[FontAwesomeIcons.five, FontAwesomeIcons.six, FontAwesomeIcons.seven],
-                    iconSize: 15,
-                    borderWidth: 0,
-                    borderColor: const <Color>[white],
-                    activeBgColors: const <List<Color>>[
-                      <Color>[Colors.blue],
-                      <Color>[Colors.pink],
-                      <Color>[Colors.purple],
-                    ],
-                    onToggle: (int? index) {
-                      if (index! + 5 != cellsSize) {
-                        if (games != null && games!.isNotEmpty) {
-                          games!.removeLast();
-                        }
-                        gameKey.currentState!.setState(() => cellsSize);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: <Widget>[
                   const Icon(FontAwesomeIcons.themeco, size: 15),
                   const SizedBox(width: 10),
                   const Text("Themes", style: TextStyle(fontSize: 16)),

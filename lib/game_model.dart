@@ -1,7 +1,6 @@
 import 'package:world/utils/shared.dart';
 
 class Game {
-  int cellsSize_ = 5;
   String state_ = "INCOMPLETE";
 
   Map<String, dynamic> magicWord_ = <String, dynamic>{};
@@ -51,7 +50,7 @@ class Game {
   bool rowRotation_ = false;
 
   Game() {
-    gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize_, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
+    gameMatrix_ = List<List<Map<String, dynamic>>>.generate(6, (int index) => List<Map<String, dynamic>>.generate(cellsSize, (int _) => <String, dynamic>{"key": '', "type": keyState.lastOrNull}));
   }
 
   Map<String, dynamic> toJson() {
@@ -62,7 +61,6 @@ class Game {
       "columnIndex": columnIndex_,
       "gameMatrix": gameMatrix_,
       "keyboardMatrix": keyboardMatrix_,
-      "cellsSize": cellsSize_,
     };
   }
 
@@ -71,8 +69,7 @@ class Game {
       ..state_ = json["state"] as String
       ..magicWord_ = json["magicWord"].cast<String, dynamic>()
       ..lineIndex_ = json["lineIndex"] as int
-      ..columnIndex_ = json["columnIndex"] as int
-      ..cellsSize_ = json["cellsSize"] as int;
+      ..columnIndex_ = json["columnIndex"] as int;
 
     for (int indexI = 0; indexI < game.gameMatrix_.length; indexI++) {
       for (int indexJ = 0; indexJ < game.gameMatrix_[indexI].length; indexJ++) {

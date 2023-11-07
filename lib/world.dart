@@ -15,7 +15,6 @@ class World extends StatefulWidget {
 }
 
 class _WorldState extends State<World> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey<ScaffoldState>();
   late final AnimationController _menuProgress;
   bool _menuState = false;
 
@@ -33,7 +32,7 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
       onKey: (RawKeyEvent value) => rawKeyboard(value, context),
       child: Scaffold(
         drawer: const DDrawer(),
-        key: _drawerKey,
+        key: drawerKey,
         body: SingleChildScrollView(
           child: StatefulBuilder(
               key: gameKey,
@@ -59,10 +58,10 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
                                             onPressed: () {
                                               if (!_menuState) {
                                                 _menuProgress.forward();
-                                                _drawerKey.currentState!.openDrawer();
+                                                drawerKey.currentState!.openDrawer();
                                               } else {
                                                 _menuProgress.reverse();
-                                                _drawerKey.currentState!.closeDrawer();
+                                                drawerKey.currentState!.closeDrawer();
                                               }
                                               _menuState = !_menuState;
                                             },
