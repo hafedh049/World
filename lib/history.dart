@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:world/game_card.dart';
@@ -31,7 +33,7 @@ class History extends StatelessWidget {
                             spacing: 20,
                             runSpacing: 20,
                             children: <Widget>[
-                              for (final Map<String, dynamic> game in games!) GameCard(data: game),
+                              for (final Map<dynamic, dynamic> game in games!) GameCard(data: game, image: Random().nextInt(7) + 1),
                             ],
                           ),
                         )

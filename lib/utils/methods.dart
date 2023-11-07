@@ -482,8 +482,9 @@ Future<void> update() async {
 }
 
 void showSnack(BuildContext context, String title, String message, ContentType type) {
-  final snackBar = SnackBar(
+  final SnackBar snackBar = SnackBar(
     elevation: 0,
+    duration: 6.seconds,
     behavior: SnackBarBehavior.floating,
     backgroundColor: Colors.transparent,
     content: AwesomeSnackbarContent(title: title, message: message, contentType: type),
