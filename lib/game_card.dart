@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:world/readonly.dart';
 import 'package:world/utils/shared.dart';
 
 class GameCard extends StatefulWidget {
@@ -18,7 +19,7 @@ class _GameCardState extends State<GameCard> {
       splashColor: transparent,
       highlightColor: transparent,
       hoverColor: transparent,
-      onTap: () {},
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => ReadOnly(data: widget.data))),
       onHover: (bool value) => setState(() => _hover = value),
       child: AnimatedScale(
         duration: 500.ms,
