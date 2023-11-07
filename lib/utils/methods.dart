@@ -428,7 +428,7 @@ Future<void> load() async {
   games = world!.get("games");
   if (games == null || games!.isEmpty || games!.last["state"] != "INCOMPLETE") {
     currentGame = Game();
-    cellsSize = currentGame!.cellsSize;
+    cellsSize = currentGame!.cellsSize_;
     currentGame!.magicWord_ = await getMagicWord();
   } else {
     currentGame = Game.fromJson(games!.last.cast<String, dynamic>());
