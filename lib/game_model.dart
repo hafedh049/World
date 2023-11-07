@@ -2,7 +2,7 @@ import 'package:world/utils/shared.dart';
 
 class Game {
   String state_ = "INCOMPLETE";
-
+  DateTime creationDate_ = DateTime.now();
   Map<String, dynamic> magicWord_ = <String, dynamic>{};
 
   int lineIndex_ = 0;
@@ -61,6 +61,7 @@ class Game {
       "columnIndex": columnIndex_,
       "gameMatrix": gameMatrix_,
       "keyboardMatrix": keyboardMatrix_,
+      "creationDate": creationDate_,
     };
   }
 
@@ -69,7 +70,8 @@ class Game {
       ..state_ = json["state"] as String
       ..magicWord_ = json["magicWord"].cast<String, dynamic>()
       ..lineIndex_ = json["lineIndex"] as int
-      ..columnIndex_ = json["columnIndex"] as int;
+      ..columnIndex_ = json["columnIndex"] as int
+      ..creationDate_ = json["creationDate"] as DateTime;
 
     for (int indexI = 0; indexI < game.gameMatrix_.length; indexI++) {
       for (int indexJ = 0; indexJ < game.gameMatrix_[indexI].length; indexJ++) {

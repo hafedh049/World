@@ -57,6 +57,6 @@ List<Map<String, String>> endGameAnalytics = <Map<String, String>>[
   <String, String>{"value": "0", "text": "Max\nStreak"},
 ];
 
-const String description = "I'm Hafedh Gunichi, a passionate Flutter developer with 2 years of experience. At 22 years old, I reside in Tunisia. I'm currently pursuing my studies in cybersecurity during my engineering program, building on my earlier foundation in computer science, which I completed during my bachelor's degree. In addition to my Flutter expertise, I'm skilled in Python, Mojo, and Firebase development. Throughout my academic journey, I've successfully completed various projects, honing my skills and gaining valuable experience.";
+const String description = "I'm Hafedh GUNICHI, a passionate Flutter developer with 2 years of experience. At 22 years old, I reside in Tunisia. I'm currently pursuing my studies in cybersecurity during my engineering program, building on my earlier foundation in computer science, which I completed during my bachelor's degree. In addition to my Flutter expertise, I'm skilled in Python, Mojo, and Firebase development. Throughout my academic journey, I've successfully completed various projects, honing my skills and gaining valuable experience.";
 
 //add animation effects to the cells

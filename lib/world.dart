@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:world/drawer.dart';
 import 'package:world/error.dart';
 import 'package:world/utils/methods.dart';
@@ -14,16 +15,7 @@ class World extends StatefulWidget {
   State<World> createState() => _WorldState();
 }
 
-class _WorldState extends State<World> with TickerProviderStateMixin {
-  late final AnimationController _menuProgress;
-  bool _menuState = false;
-
-  @override
-  void initState() {
-    _menuProgress = AnimationController(vsync: this, duration: 1.seconds);
-    super.initState();
-  }
-
+class _WorldState extends State<World> {
   @override
   Widget build(BuildContext context) {
     return RawKeyboardListener(
@@ -55,17 +47,8 @@ class _WorldState extends State<World> with TickerProviderStateMixin {
                                         children: <Widget>[
                                           const SizedBox(width: 20),
                                           IconButton(
-                                            onPressed: () {
-                                              if (!_menuState) {
-                                                _menuProgress.forward();
-                                                drawerKey.currentState!.openDrawer();
-                                              } else {
-                                                _menuProgress.reverse();
-                                                drawerKey.currentState!.closeDrawer();
-                                              }
-                                              _menuState = !_menuState;
-                                            },
-                                            icon: AnimatedIcon(icon: AnimatedIcons.menu_close, progress: _menuProgress, size: 35),
+                                            onPressed: () => drawerKey.currentState!.openDrawer(),
+                                            icon: const Icon(FontAwesomeIcons.list, size: 25),
                                           ),
                                           const SizedBox(width: 10),
                                           SizedBox(
