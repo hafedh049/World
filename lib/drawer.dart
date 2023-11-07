@@ -98,9 +98,16 @@ class _DDrawerState extends State<DDrawer> {
                     activeBgColors: const <List<Color>>[
                       <Color>[Colors.blue],
                       <Color>[Colors.pink],
-                      <Color>[Colors.purple]
+                      <Color>[Colors.purple],
                     ],
-                    onToggle: (int? index) {},
+                    onToggle: (int? index) {
+                      if (index! + 5 != cellsSize) {
+                        if (games != null && games!.isNotEmpty) {
+                          games!.removeLast();
+                        }
+                        gameKey.currentState!.setState(() => cellsSize);
+                      }
+                    },
                   ),
                 ],
               ),
