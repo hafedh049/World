@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'package:world/game_model.dart';
+import 'package:world/history.dart';
 
 String theme = "dark";
 String language = "en";
@@ -15,6 +16,7 @@ const Color blue = Color.fromARGB(255, 0, 146, 175);
 const Color white = Color.fromARGB(255, 229, 229, 229);
 const Color transparent = Colors.transparent;
 const Color green = Colors.green;
+const Color red = Colors.red;
 const Color dark = Colors.black87;
 Color yellow = Colors.amber;
 
@@ -25,11 +27,10 @@ Set<String> keyState = <String>{"CORRECT", "INCORRECT", "MISPLACED", "UNSELECTED
 String selectedItem = "Home";
 
 final List<Map<String, dynamic>> menu = <Map<String, dynamic>>[
-  <String, dynamic>{"state": false, "item": "Home", "onTap": () {}, "icon": FontAwesomeIcons.gamepad},
-  <String, dynamic>{"state": false, "item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft},
-  <String, dynamic>{"state": false, "item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator},
-  <String, dynamic>{"state": false, "item": "About Me", "onTap": () {}, "icon": FontAwesomeIcons.medal},
-  <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes},
+  <String, dynamic>{"state": false, "item": "History", "onTap": () {}, "icon": FontAwesomeIcons.clockRotateLeft, "screen": const History()},
+  <String, dynamic>{"state": false, "item": "Analytics", "onTap": () {}, "icon": FontAwesomeIcons.calculator, "screen": const History()},
+  <String, dynamic>{"state": false, "item": "About Me", "onTap": () {}, "icon": FontAwesomeIcons.medal, "screen": const History()},
+  <String, dynamic>{"state": false, "item": "Version 1.0.0", "onTap": () {}, "icon": FontAwesomeIcons.cubes, "screen": const History()},
 ];
 
 Box<List<dynamic>>? world;

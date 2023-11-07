@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:world/about_me.dart';
 import 'package:world/utils/shared.dart';
 
 class DDrawer extends StatefulWidget {
@@ -46,11 +45,7 @@ class _DDrawerState extends State<DDrawer> {
                   child: StatefulBuilder(
                     builder: (BuildContext context, void Function(void Function()) _) {
                       return InkWell(
-                        onTap: () {
-                          if (true) {
-                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => const AboutMe()));
-                          }
-                        },
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => entry["screen"])),
                         onHover: (bool value) => _(() => entry["state"] = value),
                         splashColor: transparent,
                         hoverColor: transparent,
